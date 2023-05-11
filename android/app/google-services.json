@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "187608040384",
+    "project_id": "filmer-98352",
+    "storage_bucket": "filmer-98352.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:187608040384:android:fe46d9f7cec5ccbff87e25",
+        "android_client_info": {
+          "package_name": "com.filmer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "187608040384-c0arisirksra7ao6p0gsf7nngjlomsqp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.filmer",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "187608040384-iefl0s4a9p7s9dgih1d7d9blg0qdecrd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.filmer",
+            "certificate_hash": "ccfa37668b41a13ecd4bd475baba29c6723e1c56"
+          }
+        },
+        {
+          "client_id": "187608040384-j35c6m6jvpd1sap91m1o3r8hrtthirh7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDt_xdiAzb_kQrUgpQhbiaBMMmwyZJgdIc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "187608040384-j35c6m6jvpd1sap91m1o3r8hrtthirh7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
