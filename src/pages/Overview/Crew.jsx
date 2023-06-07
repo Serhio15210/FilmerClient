@@ -3,15 +3,18 @@ import {useTheme} from "../../providers/ThemeProvider";
 import {FlatList, StyleSheet, Text, View} from "react-native";
 import {normalize} from "../../responsive/fontSize";
 
-import {MAIN_RED} from "../../constants";
+import {MAIN_RED} from "../../constants/colors";
 import RenderCastItem from "./RenderCastItem";
 
+import {themeColors} from "./themeColors";
+
 const Crew = ({crew, cast, navigation}) => {
-  const {screenTheme} = useTheme();
+  const {screenTheme,i18n,appTheme} = useTheme();
+  const styles = style(themeColors[appTheme])
   const details = screenTheme;
   return (
     <View  style={styles.container}>
-      <Text style={styles.castTitle}>Каст:</Text>
+      <Text style={styles.castTitle}>{i18n.t('cast')}:</Text>
       <FlatList
 
         horizontal={true}
@@ -24,7 +27,7 @@ const Crew = ({crew, cast, navigation}) => {
         initialNumToRender={10}
       />
       {crew.length!==0&&
-        <Text style={styles.castTitle}>Режисери та сценаристи:</Text>}
+        <Text style={styles.castTitle}>{i18n.t('directors')}:</Text>}
       <FlatList
 
         horizontal={true}
@@ -41,13 +44,13 @@ const Crew = ({crew, cast, navigation}) => {
     </View>
   );
 };
-const styles = StyleSheet.create({
+const style = (theme)=> StyleSheet.create({
   container: {
     flex:1
   },
 
   castTitle:{
-    color: 'black',
+    color: theme.titleColor,
     fontSize: normalize(18),
     textTransform: 'uppercase',
     fontWeight: '500',

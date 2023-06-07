@@ -3,9 +3,9 @@ import {useNavigation} from "@react-navigation/native";
 import {normalize} from "../../responsive/fontSize";
 import {FlatList, Image, Pressable, Text, TouchableOpacity, View} from "react-native";
 import {IMG_URI, UNKNOWN_IMG} from "../../api/apiKey";
-import {MAIN_RED} from "../../constants";
+import {MAIN_RED} from "../../constants/colors";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import {styles} from "./styles";
+import {styles} from "./style";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const Episodes = ({data}) => {

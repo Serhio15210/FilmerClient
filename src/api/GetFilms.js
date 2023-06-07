@@ -1,12 +1,14 @@
 import { API_KEY } from "./apiKey";
 import {Alert} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export default class GetFilms {
   static async getRecommendation(genres,actors) {
 
     try {
-      const responseGenres =  await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=uk&with_genres=${genres.join(',')}`);
-      const responseActors =  await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=uk&with_cast=${actors.join(',')}`);
-      const responseMix =  await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=uk&with_genres=${genres.join(',')}&with_cast=${actors.join(',')}`);
+      const locale=await AsyncStorage.getItem('locale')
+      const responseGenres =  await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=${locale==='ukr'?'uk':'en'}&with_genres=${genres.join(',')}`);
+      const responseActors =  await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=${locale==='ukr'?'uk':'en'}&with_cast=${actors.join(',')}`);
+      const responseMix =  await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=${locale==='ukr'?'uk':'en'}&with_genres=${genres.join(',')}&with_cast=${actors.join(',')}`);
       const genreData = await responseGenres.json() ;
       const actorsData = await responseActors.json();
       const mixData = await responseMix.json();
@@ -23,7 +25,8 @@ export default class GetFilms {
   static async getSoonMovies() {
 
     try {
-      const response =  await fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=uk`);
+      const locale=await AsyncStorage.getItem('locale')
+      const response =  await fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=${locale==='ukr'?'uk':'en'}`);
       const soonData = await response.json();
 
       return soonData;
@@ -35,7 +38,8 @@ export default class GetFilms {
 
   static async getPremiereMovies(page) {
     try {
-      const response = await fetch(`https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=uk&page=${page}`)
+      const locale=await AsyncStorage.getItem('locale')
+      const response = await fetch(`https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=${locale==='ukr'?'uk':'en'}&page=${page}`)
       const premiereData = await response.json();
 
       return premiereData;
@@ -47,8 +51,8 @@ export default class GetFilms {
 
   static async getPopularMovies() {
     try {
-
-      const response = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=uk&page=1`)
+      const locale=await AsyncStorage.getItem('locale')
+      const response = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=${locale==='ukr'?'uk':'en'}&page=1`)
       const popularData = await response.json();
 
       return popularData;
@@ -60,8 +64,8 @@ export default class GetFilms {
 
   static async getDetailFilm(id){
     try {
-
-      const response = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&append_to_response=credits&language=uk`)
+      const locale=await AsyncStorage.getItem('locale')
+      const response = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&append_to_response=credits&language=${locale==='ukr'?'uk':'en'}`)
       const detailData = await response.json();
 
       return detailData;
@@ -72,8 +76,8 @@ export default class GetFilms {
   }
   static async getSimilarFilm(id){
     try {
-
-      const response = await fetch(`https://api.themoviedb.org/3/movie/${id}/similar?api_key=${API_KEY}&sort_by=popularity.desc&language=uk`)
+      const locale=await AsyncStorage.getItem('locale')
+      const response = await fetch(`https://api.themoviedb.org/3/movie/${id}/similar?api_key=${API_KEY}&sort_by=popularity.desc&language=${locale==='ukr'?'uk':'en'}`)
       const similarFilmsData = await response.json();
 
       return similarFilmsData;
@@ -84,8 +88,8 @@ export default class GetFilms {
   }
   static async getBestFilms(page=1){
     try {
-
-      const response = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=uk&page=${page}`)
+      const locale=await AsyncStorage.getItem('locale')
+      const response = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=${locale==='ukr'?'uk':'en'}&page=${page}`)
       const bestData = await response.json();
 
       return bestData;
@@ -96,8 +100,8 @@ export default class GetFilms {
   }
   static async getReviews(id){
     try {
-
-      const response =   await fetch(`https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${API_KEY}&language=uk`)
+      const locale=await AsyncStorage.getItem('locale')
+      const response =   await fetch(`https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${API_KEY}&language=${locale==='ukr'?'uk':'en'}`)
       const reviewsData = await response.json();
 
       return reviewsData;
@@ -121,7 +125,8 @@ export default class GetFilms {
   }
   static async getTrailer(movie_id){
     try {
-      const response=await fetch(`https://api.themoviedb.org/3/movie/${movie_id}/videos?api_key=${API_KEY}&language=uk`)
+      const locale=await AsyncStorage.getItem('locale')
+      const response=await fetch(`https://api.themoviedb.org/3/movie/${movie_id}/videos?api_key=${API_KEY}&language=${locale==='ukr'?'uk':'en'}`)
       const trailer=await response.json()
       return trailer.results
     }catch (error){

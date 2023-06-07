@@ -10,6 +10,7 @@ import MyHomeLists from "../components/MyHomeLists";
 import GetSerials from "../api/GetSerials";
 import MenuSerialList from "../components/Serials/MenuSerialList";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {useTheme} from "../providers/ThemeProvider";
 
 const HomeSerials = ({navigation}) => {
   const [soonData, setSoonData] = useState([]);
@@ -19,6 +20,7 @@ const HomeSerials = ({navigation}) => {
   const {getUserInfo, getUserLists, getUserNotifications} = useAuth()
   const [isLoading, setLoading] = useState(true);
   const dispatch = useDispatch();
+  const {isDarkTheme,i18n} = useTheme()
   const [recommendData, setRecommendData] = useState([]);
   const {
     refresh, user
@@ -106,11 +108,11 @@ const HomeSerials = ({navigation}) => {
       >
 
 
-        <MenuSerialList data={soonData} name="Новинки" navigation={navigation} isLoading={isLoading}/>
-        <MenuSerialList data={popularData} name={"Зараз дивляться"} isLoading={isLoading}/>
-        <MenuSerialList data={premierData} name={"Кращі серіали"} isLoading={isLoading}/>
+        <MenuSerialList data={soonData} name={i18n.t('novelty')} navigation={navigation} isLoading={isLoading}/>
+        <MenuSerialList data={popularData} name={i18n.t('nowWatching')} isLoading={isLoading}/>
+        <MenuSerialList data={premierData} name={i18n.t('bestSerials')} isLoading={isLoading}/>
         {recommendData?.length > 0 &&
-          <MenuSerialList data={recommendData} name="Рекомендації" navigation={navigation} isLoading={isLoading}/>}
+          <MenuSerialList data={recommendData} name={i18n.t('recommendations')} navigation={navigation} isLoading={isLoading}/>}
         <MyHomeLists/>
       </ScrollView>
     </ScreenWrapper>

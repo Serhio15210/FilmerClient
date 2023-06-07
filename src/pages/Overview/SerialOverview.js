@@ -16,14 +16,14 @@ import {
 import {normalize} from "../../responsive/fontSize";
 import GetFilms from "../../api/GetFilms";
 import {getReviews} from "../../api/films";
-import Loading from "../../components/Loading";
+import Loading from "../../components/UI/Loading";
 import RateInfoModal from "../../components/filmModals/RateInfoModal";
 import TrailerModal from "../../components/Films/TrailerModal";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AnimatedHeader from "../../components/UI/AnimatedHeader";
 import {IMG_URI} from "../../api/apiKey";
 import LinearGradient from "react-native-linear-gradient";
-import {MAIN_GREY, MAIN_RED} from "../../constants";
+import {MAIN_GREY, MAIN_RED} from "../../constants/colors";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Tmdb from "../../assets/tmdb.svg";
@@ -32,7 +32,7 @@ import Details from "./Details";
 import Genres from "./Genres";
 import Review from "./Review";
 import SimilarFilms from "./SimilarFilms";
-import {styles} from "./styles";
+import {styles} from "./style";
 import GetSerials from "../../api/GetSerials";
 import {data} from "../../constants/genres";
 import Seasons from "./Seasons";
@@ -54,7 +54,7 @@ const SerialOverview = ({route}) => {
   const [reviews, setReviews] = useState({all: [], subs: []});
   const [trailer, setTrailer] = useState([]);
   const [chosenFilm, setChosenFilm] = useState({})
-  const {screenTheme, isDarkTheme} = useTheme();
+  const {screenTheme, isDarkTheme,i18n} = useTheme();
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const details = screenTheme;
@@ -183,7 +183,7 @@ const SerialOverview = ({route}) => {
                 {state.selected?.homepage && <TouchableOpacity style={styles.whiteButton} onPress={() => {
                   Linking.openURL(state.selected?.homepage);
                 }}>
-                  <Text style={styles.text}>Домашня сторінка</Text>
+                  <Text style={styles.text}>{i18n.t('homePage')}</Text>
                   <FontAwesome5 name={'play'} color={MAIN_RED} style={{marginLeft: normalize(10)}}/>
                 </TouchableOpacity>}
               </View>
@@ -193,18 +193,18 @@ const SerialOverview = ({route}) => {
               <View style={{marginTop: normalize(10)}}>
                 <Text style={styles.text} numberOfLines={openReview ? 0 : 3}>{state.selected?.overview}</Text>
                 <Pressable style={{alignSelf: 'center'}} onPress={() => setOpenReview(!openReview)}>
-                  {openReview ? <Text style={{...styles.text, color: MAIN_RED}}>Hide</Text> :
+                  {openReview ? <Text style={{...styles.text, color: MAIN_RED}}>{i18n.t('hide')}</Text> :
                     <MaterialIcons name={'more-horiz'} color={MAIN_RED} size={normalize(40)}/>}
                 </Pressable>
               </View>
             </View>}
 
             <View style={{flex: 1, paddingTop: normalize(20)}}>
-              <Text style={{...styles.tagline, fontSize: normalize(18)}}>Сезони:</Text>
+              <Text style={{...styles.tagline, fontSize: normalize(18)}}>{i18n.t('seasons')}:</Text>
               <Seasons data={state.selected.seasons} seasonName={state.selected?.name} seasonId={id}/>
             </View>
             <View style={{flex: 1, paddingTop: normalize(20)}}>
-              <Text style={{...styles.tagline, fontSize: normalize(18)}}>Рейтинги:</Text>
+              <Text style={{...styles.tagline, fontSize: normalize(18)}}>{i18n.t('ratings')}:</Text>
               <View style={{width: '100%', marginTop: normalize(15)}}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   {/*<Image source={tmdb} style={{width:normalize(25),height:normalize(25)}}/>*/}
@@ -219,17 +219,17 @@ const SerialOverview = ({route}) => {
                 <TouchableOpacity
                   style={{...styles.switchButton, borderColor: switchButton === 'cast' ? MAIN_RED : MAIN_GREY}}
                   onPress={() => setSwitchButton('cast')}>
-                  <Text style={styles.text}>Команда</Text>
+                  <Text style={styles.text}>{i18n.t('team')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={{...styles.switchButton, borderColor: switchButton === 'details' ? MAIN_RED : MAIN_GREY}}
                   onPress={() => setSwitchButton('details')}>
-                  <Text style={styles.text}>Деталі</Text>
+                  <Text style={styles.text}>{i18n.t('details')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={{...styles.switchButton, borderColor: switchButton === 'genre' ? MAIN_RED : MAIN_GREY}}
                   onPress={() => setSwitchButton('genre')}>
-                  <Text style={styles.text}>Жанри</Text>
+                  <Text style={styles.text}>{i18n.t('genres')}</Text>
                 </TouchableOpacity>
 
               </View>
@@ -239,7 +239,7 @@ const SerialOverview = ({route}) => {
 
             </View>
             {reviews?.all.length > 0 && <View style={{marginTop: normalize(50), marginBottom: normalize(20)}}>
-              <Text style={styles.castTitle}>Reviews:</Text>
+              <Text style={styles.castTitle}>{i18n.t('reviews')}:</Text>
               {reviews?.all?.slice(0, 4)?.map((item, index) => {
                 return (
                   <Review item={item} key={index}/>
@@ -247,8 +247,7 @@ const SerialOverview = ({route}) => {
               })}
               <TouchableOpacity
                 onPress={() => navigation.navigate('Reviews', {reviews: reviews, title: state.selected.title})}>
-                <Text style={{...styles.text, textAlign: 'center', fontWeight: '600', fontSize: normalize(18)}}>All
-                  reviews</Text>
+                <Text style={{...styles.text, textAlign: 'center', fontWeight: '600', fontSize: normalize(18)}}>{i18n.t('allReviews')}</Text>
               </TouchableOpacity>
 
             </View>}

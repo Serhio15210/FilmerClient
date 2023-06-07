@@ -10,7 +10,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 
 import FindFilmModal from "../../components/filmModals/FindFilmModal";
 import Feather from "react-native-vector-icons/Feather";
-import {MAIN_GREY_FADE, MAIN_RED} from "../../constants";
+import {MAIN_GREY_FADE, MAIN_RED} from "../../constants/colors";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FilmItem from "../../components/Films/FilmItem";
 import unknown from "../../styles/unknown.png";
@@ -24,7 +24,7 @@ import {
   deleteFavoriteFilm,
   getFavoriteFilms
 } from "../../api/auth";
-import Loading from "../../components/Loading";
+import Loading from "../../components/UI/Loading";
 import RateInfoModal from "../../components/filmModals/RateInfoModal";
 
 const FavoriteListOverview = ({route}) => {
@@ -40,7 +40,7 @@ const FavoriteListOverview = ({route}) => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
-  const {isDarkTheme} = useTheme()
+  const {isDarkTheme,i18n} = useTheme()
   const {getUserInfo} = useAuth()
   let row = []
   let swipe
@@ -165,7 +165,7 @@ const FavoriteListOverview = ({route}) => {
         </View>
         <View style={{paddingHorizontal: normalize(15), flex: 1}}>
           <Text
-            style={{...styles.imgTitle, color: 'black', fontWeight: '600', marginBottom: normalize(20)}}>Фільми/Серіали:</Text>
+            style={{...styles.imgTitle, color: 'black', fontWeight: '600', marginBottom: normalize(20)}}>{`${i18n.t('films')}/${i18n.t('serials')}`}</Text>
           {listData?.length === 0 ?
             <TouchableOpacity style={styles.addBlock} onPress={() => setIsAddFilm(true)}>
               {/*<Text style={{textAlign: 'center', alignItems: 'center',color:'white',fontSize:normalize(18)}}>Add films </Text>*/}
@@ -180,7 +180,14 @@ const FavoriteListOverview = ({route}) => {
                                            swipeAction={deleteItem} onRatePress={()=>{
                             setSelectFilm(item)
                             setOpenEditFilm(true)
-                          }} />
+                          }} onPress={()=>{
+                            if (item?.isSerial){
+                              navigation.navigate('SerialOverview',{title:item?.title,id:item?.imdb_id})
+                            }else{
+                              navigation.navigate('FilmOverview',{title:item?.title,id:item?.imdb_id})
+                            }
+
+                          }}/>
                         }
                         }/>
           }

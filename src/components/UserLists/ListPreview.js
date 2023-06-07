@@ -3,18 +3,22 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {normalize} from "../../responsive/fontSize";
 import {FAVORITE_LIST_IMG, IMG_URI, NONAME_IMG, UNKNOWN_IMG} from "../../api/apiKey";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import {MAIN_SUCCESS} from "../../constants";
+import {MAIN_SUCCESS} from "../../constants/colors";
 import unknown from "../../styles/unknown.png"
+import {useTheme} from "../../providers/ThemeProvider";
+import {themeColors} from "./themeColors";
+
 const ListPreview = ({data, isFavorite=false,onPress}) => {
   const films = isFavorite?data:data?.films
-
+  const {i18n,appTheme}=useTheme()
+  const style = styles(themeColors[appTheme]);
   return (
     <TouchableOpacity activeOpacity={0.7} style={{marginRight:normalize(30)}} onPress={onPress}>
-      {isFavorite? <Text style={styles.title}>Favorite <AntDesign name="heart" size={20}
+      {isFavorite? <Text style={style.title}>{i18n.t('favorite')} <AntDesign name="heart" size={20}
         color={MAIN_SUCCESS}/> </Text>:
-        <Text style={styles.title}>{data?.name}</Text>
+        <Text style={style.title}>{data?.name}</Text>
       }
-      {films?.length>=3?<View style={styles.filmsRow}>
+      {films?.length>=3?<View style={style.filmsRow}>
 
           <Image source={{uri: IMG_URI + films[0]?.poster}} style={{
             width: normalize(150),
@@ -56,10 +60,10 @@ const ListPreview = ({data, isFavorite=false,onPress}) => {
     </TouchableOpacity>
   );
 };
-const styles = StyleSheet.create({
+export const styles = (theme) => StyleSheet.create({
   title: {
     fontSize: normalize(24),
-    color: 'black',
+    color: theme.titleColor,
     fontWeight: '500',
     marginBottom: 5
   },

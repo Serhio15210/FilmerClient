@@ -19,7 +19,7 @@ import Svg, {Path} from "react-native-svg";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MenuIcon from "../assets/menu.svg";
 import {normalize} from "../responsive/fontSize";
-import {MAIN_RED} from "../constants";
+import {MAIN_RED} from "../constants/colors";
 import CustomTabBar from "../components/navigation/CustomTabBar";
 import {useAuth} from "../providers/AuthProvider";
 import {useDispatch, useSelector} from "react-redux";
@@ -76,7 +76,7 @@ export const Users = ({ navigation, route }) => {
 
 
 export const Tabs = () => {
-  const {isDarkTheme} = useTheme();
+
   const [selectedTab, setSelectedTab] = useState('Home');
   return (
 

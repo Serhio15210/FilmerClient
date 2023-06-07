@@ -1,10 +1,8 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {useState} from "react";
 
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-
     user: {
       userName:'',
       avatar:'',

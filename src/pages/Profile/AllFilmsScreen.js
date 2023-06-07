@@ -4,24 +4,27 @@ import {normalize} from "../../responsive/fontSize";
 import {getUserFilms} from "../../api/films";
 import {IMG_URI, UNKNOWN_IMG} from "../../api/apiKey";
 import {AirbnbRating} from "react-native-ratings";
-import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED} from "../../constants";
-import Loading from "../../components/Loading";
+import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED} from "../../constants/colors";
+import Loading from "../../components/UI/Loading";
 import {Dropdown} from 'react-native-element-dropdown';
 import SortDropdown from "../../components/SortDropdowns/SortDropdown";
 import SortRateDropdown from "../../components/SortDropdowns/SortRateDropdown";
 import PageButtons from "../../components/UI/PageButtons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import UserFilm from "./UserFilm";
+import {useAuth} from "../../providers/AuthProvider";
+import {useTheme} from "../../providers/ThemeProvider";
 
 const AllFilmsScreen = ({navigation}) => {
   const [films, setFilms] = useState([])
   let scrollRef = useRef(null);
+  const {i18n}=useTheme()
   const [scrollPosition, setScrollPosition] = useState(0)
   const [scrollY] = useState(new Animated.Value(0));
-  const filters = [{label: 'ASC', value: 'asc'}, {label: 'DESC', value: 'desc'}, {
-    label: 'Rating Highest',
+  const filters = [{label: i18n.t('asc'), value: 'asc'}, {label: i18n.t('desc'), value: 'desc'}, {
+    label: i18n.t('ratingHighest'),
     value: 'rateHigh'
-  }, {label: 'Rating Lowest', value: 'rateLow'}]
+  }, {label: i18n.t('ratingLowest'), value: 'rateLow'}]
   const rates = [{label: '0', value: 0}, {label: '1', value: 1}, {label: '2', value: 2}, {
     label: '3',
     value: 3
@@ -31,6 +34,7 @@ const AllFilmsScreen = ({navigation}) => {
   const [loading, setLoading] = useState(true)
   const [totalPages, setTotalPages] = useState(1)
   const [page, setPage] = useState(1)
+
   const scrolling = scrollY.interpolate({
     inputRange: [0, 100],
     outputRange: [0, 1],
@@ -62,7 +66,7 @@ const AllFilmsScreen = ({navigation}) => {
         </View>
         {films.length === 0 ?
           <View style={styles.containerCenter}>
-            <Text style={{color: MAIN_GREY_FADE}}>Films not found</Text>
+            <Text style={{color: MAIN_GREY_FADE}}>{i18n.t('filmsNotFound')}</Text>
           </View>
           :
           <Animated.ScrollView ref={scrollRef} style={{flex: 1}} showsVerticalScrollIndicator={false}

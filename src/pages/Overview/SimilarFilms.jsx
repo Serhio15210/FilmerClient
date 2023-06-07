@@ -3,15 +3,17 @@ import {useTheme} from "../../providers/ThemeProvider";
 import {FlatList, StyleSheet, Text, View} from "react-native";
 import RenderSimilarItem from "./RenderSimilarItem";
 import {normalize} from "../../responsive/fontSize";
+import {themeColors} from "./themeColors";
 
 
 const SimilarFilms = ({similarFilms, navigation,isSerial}) => {
-  const {screenTheme} = useTheme();
+  const {i18n,appTheme} = useTheme();
+  const styles = style(themeColors[appTheme])
   return (
     <View style={{paddingTop: normalize(20)}}>
 
 
-      <Text style={styles.title}>{isSerial?"Схожі серіали:":"Схожі фільми:"}</Text>
+      <Text style={styles.title}>{isSerial?i18n.t('similarSerials'):i18n.t('similarFilms')}:</Text>
       <FlatList
         style={{marginBottom: 30}}
         horizontal={true}
@@ -27,9 +29,9 @@ const SimilarFilms = ({similarFilms, navigation,isSerial}) => {
     </View>
   );
 };
-const styles=StyleSheet.create({
+const style = (theme)=> StyleSheet.create({
   title:{
-    color: 'black',
+    color: theme.titleColor,
     fontSize: normalize(18),
     textTransform: 'uppercase',
     fontWeight: '500',

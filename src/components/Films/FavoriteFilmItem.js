@@ -12,7 +12,7 @@ import {IMG_URI} from "../../api/apiKey";
 import unknown from "../../styles/unknown.png";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import {MAIN_GREY, MAIN_SUCCESS} from "../../constants";
+import {MAIN_GREY, MAIN_SUCCESS} from "../../constants/colors";
 
 const FavoriteFilmItem = ({item, isSerial, closeRow, index, row, leftAction, swipeAction}) => {
   const {isDarkTheme, screenTheme} = useTheme()

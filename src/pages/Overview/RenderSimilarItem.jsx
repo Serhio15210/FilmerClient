@@ -3,9 +3,11 @@ import {useTheme} from "../../providers/ThemeProvider";
 import {ImageBackground, Text, TouchableOpacity} from "react-native";
 import {IMG_URI, UNKNOWN_IMG} from "../../api/apiKey";
 import {normalize} from "../../responsive/fontSize";
+import {themeColors} from "./themeColors";
 
 const RenderSimilarItem = ({item, isSerial, navigation}) => {
   const {screenTheme} = useTheme()
+  const {i18n,appTheme} = useTheme();
   // const navigation=useNavigation()
   const details = screenTheme;
   return (
@@ -26,7 +28,7 @@ const RenderSimilarItem = ({item, isSerial, navigation}) => {
 
 
       <Text style={{
-        color: 'black',
+        color: themeColors[appTheme].titleColor,
         fontSize: normalize(18),
         textAlign: 'center'
       }}>{isSerial ? item.name : item.title}</Text>

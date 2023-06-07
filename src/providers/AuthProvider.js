@@ -1,18 +1,13 @@
-import React, {useContext, useState, useEffect, useRef, useMemo} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useDispatch, useSelector} from "react-redux";
 import {getProfile, saveFcmToken} from "../api/auth";
 import {setNotifications, setUser, setUserList} from "../redux/authReducer";
-import {deleteAloneFilms} from "../api/films";
 import {getUserList} from "../api/lists";
 import messaging from "@react-native-firebase/messaging";
-import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
-import {Text, View} from "react-native";
-import {MAIN_RED} from "../constants";
-import {normalize} from "../responsive/fontSize";
+import Toast from 'react-native-toast-message';
 import {pushConfig} from "../constants/pushConfig";
 import {getNotifications} from "../api/notifications";
-import firebase from "@react-native-firebase/app";
 
 const AuthContext = React.createContext(null);
 
@@ -43,27 +38,25 @@ const AuthProvider = ({children}) => {
     }
   }
   const getUserLists = () => {
-    // console.log(new Date().getSeconds())
     getUserList().then(res => {
       if (res.success) {
-        // console.log(new Date().getSeconds(),res)
         dispatch(setUserList(res?.lists))
       }
-
     })
   }
+
   const getUserNotifications = () => {
     getNotifications().then(res => {
       // console.log(notifications.concat(res?.notifications))
       dispatch(setNotifications(res?.notifications))
     })
   }
+
   const requestUserPermission = async () => {
     const authStatus = await messaging().requestPermission();
     const enabled =
       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
     if (enabled) {
       console.log('Authorization status:', authStatus);
     }
@@ -71,13 +64,12 @@ const AuthProvider = ({children}) => {
   useEffect(() => {
 
     AsyncStorage.getItem('auth').then(res => {
+
       if (res) {
         if (requestUserPermission) {
           messaging().getToken().then(token => {
             console.log(token)
-            saveFcmToken(token, res).then(res => {
-              // console.log(res)
-            })
+            saveFcmToken(token, res)
           })
         }
         setAuthToken(res)
@@ -89,17 +81,14 @@ const AuthProvider = ({children}) => {
 
   useEffect(() => {
     if (authToken) {
-
       AsyncStorage.setItem('auth', authToken)
       getUserInfo()
       getUserNotifications()
       // deleteAloneFilms(authToken)
       setIsAuth(true)
     }
-
   }, [authToken])
   useEffect(() => {
-
     messaging()
       .getInitialNotification()
       .then(remoteMessage => {
@@ -108,9 +97,7 @@ const AuthProvider = ({children}) => {
             'Notification caused app to open from quit state:',
             remoteMessage.notification,
           );
-
         }
-
       });
     messaging().onNotificationOpenedApp(remoteMessage => {
       console.log(
@@ -123,9 +110,7 @@ const AuthProvider = ({children}) => {
       console.log('Message handled in the background!', remoteMessage);
 
     });
-    // messaging().onTokenRefresh(async (token) => {
-    //   await safeFirebaseToken(token)
-    // })
+
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
       Toast.show({
@@ -135,7 +120,6 @@ const AuthProvider = ({children}) => {
         text2: remoteMessage?.notification?.body
       });
       getUserNotifications()
-      // new Notification(remoteMessage?.notification?.title, { body: remoteMessage?.notification?.body });
 
     });
 
@@ -143,11 +127,6 @@ const AuthProvider = ({children}) => {
     return unsubscribe
   }, [])
 
-  // Toast.show({
-  //   type: 'success',
-  //   text1: 'Hello',
-  //   text2: 'This is some something 👋'
-  // });
   return (
     <AuthContext.Provider
       value={{
@@ -173,8 +152,6 @@ const AuthProvider = ({children}) => {
   );
 };
 
-// The useAuth hook can be used by components under an AuthProvider to
-// access the auth context value.
 const useAuth = () => {
   const auth = useContext(AuthContext);
   if (auth == null) {

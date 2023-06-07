@@ -21,11 +21,11 @@ import {DefaultStyles} from "../styles/defaultstyles";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import FilterDropdown from "../components/Find/FilterDropdown";
 import {normalize} from "../responsive/fontSize";
-import {MAIN_GREY_FADE, MAIN_RED} from "../constants";
+import {MAIN_GREY_FADE, MAIN_RED} from "../constants/colors";
 import Input from "../components/UI/Input";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import PageButtons from "../components/UI/PageButtons";
-import Loading from "../components/Loading";
+import Loading from "../components/UI/Loading";
 import SearchActorItem from "../components/SearchActorItem";
 import GetActorsInfo from "../api/GetActorsInfo";
 
@@ -37,7 +37,7 @@ const FindScreen = ({navigation}) => {
   const [isFilter, setIsFilter] = useState(false);
   const [loading, setLoading] = useState(true);
   const heightTop = openTop ? "auto" : 0;
-  const {screenTheme, isDarkTheme} = useTheme()
+  const {screenTheme, isDarkTheme,i18n} = useTheme()
   const [selectedYear, setSelectedYear] = useState([]);
   const [selectedDate, setSelectedDate] = useState([]);
   let scrollPageRef
@@ -70,8 +70,8 @@ const FindScreen = ({navigation}) => {
     setLoading(false)
   }
   const getFilterInfo = async () => {
-    const id = selectedDate.join().length === 0 ? "" : selectedDate.join()
-    const years = selectedYear.join().length === 0 ? "" : selectedYear.join()
+    const id = selectedDate.join().length === 0 ? "" : selectedDate?.join()
+    const years = selectedYear.join().length === 0 ? "" : selectedYear?.join()
     setLoading(true)
     const filterData = await GetFindInfo.getFilterMovies(page, years, id, movieQuery)
     // console.log(filterData.results[0])

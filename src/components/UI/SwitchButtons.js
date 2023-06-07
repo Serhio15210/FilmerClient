@@ -3,7 +3,7 @@ import {Text, TouchableOpacity, View,StyleSheet} from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {normalize} from "../../responsive/fontSize";
 import {useTheme} from "../../providers/ThemeProvider";
-import {MAIN_RED} from "../../constants";
+import {MAIN_RED} from "../../constants/colors";
 
 const SwitchButtons = ({left,right,onSwitch,switchValue}) => {
   const {isDarkTheme}=useTheme()

@@ -12,10 +12,10 @@ import {
 import {normalize} from "../../responsive/fontSize";
 import Feather from "react-native-vector-icons/Feather";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED, MAIN_SUCCESS} from "../../constants";
+import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED, MAIN_SUCCESS} from "../../constants/colors";
 import PageButtons from "../../components/UI/PageButtons";
 import {getUsers} from "../../api/users";
-import Loading from "../../components/Loading";
+import Loading from "../../components/UI/Loading";
 import {useDispatch, useSelector} from "react-redux";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {subscribe, subscribeUser, unsubscribeUser} from "../../api/auth";
@@ -23,6 +23,7 @@ import {setUser} from "../../redux/authReducer";
 import UserItem from "../../components/users/UserItem";
 import {useIsFocused} from "@react-navigation/native";
 import Input from "../../components/UI/Input";
+import {useTheme} from "../../providers/ThemeProvider";
 
 const SearchUserScreen = ({navigation}) => {
   const [users, setUsers] = useState()
@@ -34,6 +35,7 @@ const SearchUserScreen = ({navigation}) => {
   const {user} = useSelector(state => state.auth)
   const dispatch = useDispatch()
   const isFocused = useIsFocused();
+  const {i18n} = useTheme();
   const [scrollPosition, setScrollPosition] = useState(0)
   const [scrollY] = useState(new Animated.Value(0));
   const scrolling = scrollY.interpolate({

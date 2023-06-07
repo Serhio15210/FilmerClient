@@ -1,5 +1,5 @@
 import React from 'react';
-import {MAIN_RED} from "../../constants";
+import {MAIN_RED} from "../../constants/colors";
 import {normalize} from "../../responsive/fontSize";
 import {StyleSheet, Text, TouchableOpacity} from "react-native";
 

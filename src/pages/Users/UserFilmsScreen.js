@@ -1,11 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Animated, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {getForeignUserFilms, getUserFilms} from "../../api/films";
-import Loading from "../../components/Loading";
+import Loading from "../../components/UI/Loading";
 import {normalize} from "../../responsive/fontSize";
 import SortDropdown from "../../components/SortDropdowns/SortDropdown";
 import SortRateDropdown from "../../components/SortDropdowns/SortRateDropdown";
-import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED, MAIN_SUCCESS} from "../../constants";
+import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED, MAIN_SUCCESS} from "../../constants/colors";
 import PageButtons from "../../components/UI/PageButtons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {IMG_URI, UNKNOWN_IMG} from "../../api/apiKey";

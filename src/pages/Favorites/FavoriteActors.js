@@ -3,16 +3,20 @@ import {ActivityIndicator, Animated, FlatList, Image, StyleSheet, Text, Touchabl
 import {normalize} from "../../responsive/fontSize";
 import {useIsFocused, useNavigation} from "@react-navigation/native";
 import {data} from "../../constants/genres";
-import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED} from "../../constants";
+import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED} from "../../constants/colors";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import GetActorsInfo from "../../api/GetActorsInfo";
 import SearchActorItem from "../../components/SearchActorItem";
 import {IMG_URI} from "../../api/apiKey";
 import {saveFavActors} from "../../api/auth";
+import {useTheme} from "../../providers/ThemeProvider";
+import {useAuth} from "../../providers/AuthProvider";
 
 const FavoriteActors = () => {
   const navigation = useNavigation()
   const isFocused = useIsFocused()
+  const {i18n} = useTheme()
+  const {setIsNewUser} = useAuth()
   const slideUpAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim = useRef(new Animated.Value(0)).current;
   const [animate, setAnimate] = useState(false)
@@ -66,6 +70,7 @@ const FavoriteActors = () => {
     setLoading(true)
     saveFavActors(selectActors).then(res=>{
       if (res.success){
+        setIsNewUser(false)
         navigation.reset({
           index:0,
           routes:[{name:'HomeRoot'}]
@@ -82,7 +87,7 @@ const FavoriteActors = () => {
   },[page])
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Оберіть улюблених акторів:</Text>
+      <Text style={styles.title}>{i18n.t('chooseFavoriteActors')}:</Text>
 
       <Animated.View
         style={[

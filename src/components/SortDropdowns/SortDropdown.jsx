@@ -3,10 +3,12 @@ import {Dropdown} from "react-native-element-dropdown";
 import {Text, View,StyleSheet} from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Entypo from "react-native-vector-icons/Entypo";
-import {MAIN_RED, MAIN_SUCCESS} from "../../constants";
+import {MAIN_RED, MAIN_SUCCESS} from "../../constants/colors";
 import {normalize} from "../../responsive/fontSize";
+import {useTheme} from "../../providers/ThemeProvider";
 
 const SortDropdown = ({value,setValue,filters}) => {
+  const {i18n}=useTheme()
   const renderItem = item => {
     return (
       <View style={styles.item}>
@@ -35,8 +37,8 @@ const SortDropdown = ({value,setValue,filters}) => {
               maxHeight={300}
               labelField="label"
               valueField="value"
-              placeholder="Sort by"
-              searchPlaceholder="Search..."
+              placeholder={i18n.t('sortBy')}
+              searchPlaceholder={i18n.t('searchPlh')}
               value={value}
               onChange={item => {
                 setValue(item.value);

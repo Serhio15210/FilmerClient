@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED, MAIN_SUCCESS} from "../../constants";
+import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED, MAIN_SUCCESS} from "../../constants/colors";
 import {normalize} from "../../responsive/fontSize";
 import {generateRandomColor} from "../../styles/randomColors";
 import AntDesign from "react-native-vector-icons/AntDesign";

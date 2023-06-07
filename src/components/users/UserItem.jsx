@@ -1,7 +1,7 @@
 import React from 'react';
 import {normalize} from "../../responsive/fontSize";
 import {Text, TouchableOpacity, View} from "react-native";
-import {MAIN_RED, MAIN_SUCCESS} from "../../constants";
+import {MAIN_RED, MAIN_SUCCESS} from "../../constants/colors";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Ionicons from "react-native-vector-icons/Ionicons";
 

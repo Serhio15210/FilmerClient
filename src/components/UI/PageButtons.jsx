@@ -2,7 +2,7 @@ import React from 'react';
 import {normalize} from "../../responsive/fontSize";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import {MAIN_RED} from "../../constants";
+import {MAIN_RED} from "../../constants/colors";
 
 const PageButtons = ({page, setPage,extend=false,totalPages=1}) => {
   return (

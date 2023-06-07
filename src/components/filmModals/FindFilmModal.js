@@ -1,33 +1,18 @@
 import React, {useEffect, useRef, useState} from 'react';
 import GetFindInfo from "../../api/GetFindInfo";
-import {Drawer, RadioButton, useTheme} from "react-native-paper";
-import {
-  ActivityIndicator, FlatList,
-  Image,
-  Modal,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
-} from "react-native";
+import {ActivityIndicator, FlatList, Modal, StyleSheet, TextInput, TouchableOpacity, View} from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import unknown from "../../styles/unknown.png"
-import {IMG_URI} from "../../api/apiKey";
-import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED} from "../../constants";
+import {MAIN_GREY_FADE, MAIN_RED} from "../../constants/colors";
 import {normalize} from "../../responsive/fontSize";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import SwitchButtons from "../UI/SwitchButtons";
-import SelectFilmItem from "../SelectFilmItem";
-import {DefaultStyles} from "../../styles/defaultstyles";
+import SelectFilmItem from "../Films/SelectFilmItem";
 import LinearGradient from "react-native-linear-gradient";
 import Feather from "react-native-vector-icons/Feather";
+import {useTheme} from "../../providers/ThemeProvider";
 
 const FindFilmModal = ({open, setOpen, isFavorite, listData, setListData, isListCreated, onPressSuccess}) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const {screenTheme, isDarkTheme} = useTheme()
+  const {screenTheme, isDarkTheme,i18n} = useTheme();
   const [isLoading, setIsLoading] = useState(false)
   const [isFilm, setIsFilm] = useState(true)
   const [page, setPage] = useState(1);
@@ -137,7 +122,7 @@ const addFilms=(newFilm)=>{
 
         <View style={styles.inputBlock}>
           <View style={{ marginBottom: normalize(20)}}>
-            <TextInput style={styles.input} placeholder={`Введіть назву...`} placeholderTextColor={MAIN_GREY_FADE}
+            <TextInput style={styles.input} placeholder={i18n.t('enterName')} placeholderTextColor={MAIN_GREY_FADE}
                        value={searchQuery}
                        onChangeText={text => setSearchQuery(text)} />
             <View style={styles.search}>
@@ -146,7 +131,7 @@ const addFilms=(newFilm)=>{
           </View>
 
 
-          <SwitchButtons right={'Серіал'} left={"Фільм"} onSwitch={setIsFilm} switchValue={isFilm}/>
+          <SwitchButtons right={i18n.t('serial')} left={i18n.t('film')} onSwitch={setIsFilm} switchValue={isFilm}/>
         </View>
         <View style={{flex: 1}}>
           {isLoading ?

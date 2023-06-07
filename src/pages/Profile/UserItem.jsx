@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {normalize} from "../../responsive/fontSize";
-import {MAIN_GREY_FADE, MAIN_RED} from "../../constants";
+import {MAIN_GREY_FADE, MAIN_RED} from "../../constants/colors";
 import {generateRandomColor} from "../../styles/randomColors";
 
 const UserItem = ({item, onPress}) => {

@@ -8,4 +8,4 @@ export const DEFAULT_BACKGROUND_IMG="https://i.pinimg.com/originals/64/99/a0/649
 export const FAVORITE_LIST_IMG="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQI6f-ExylkpwX5V7FbtITtoiJyWk-8-jfKB-O1BBz_2fPEOg6a_ywGHfZaIvFdlDvCNfY&usqp=CAU"
 export const ADD_LIST_IMG=addPicture
 export const UNKNOWN_IMG=unknown
-export const BASE_URL="http://192.168.1.9:8000"
+export const BASE_URL="https://2731-217-146-251-58.ngrok-free.app"

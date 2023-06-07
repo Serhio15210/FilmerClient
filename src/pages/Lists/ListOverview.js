@@ -21,7 +21,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import {useTheme} from "../../providers/ThemeProvider";
 import {useDispatch, useSelector} from "react-redux";
 import Feather from "react-native-vector-icons/Feather";
-import {MAIN_GREY_FADE, MAIN_RED} from "../../constants";
+import {MAIN_GREY_FADE, MAIN_RED} from "../../constants/colors";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FindFilmModal from "../../components/filmModals/FindFilmModal";
 import AwesomeAlert from "react-native-awesome-alerts";
@@ -42,13 +42,12 @@ const ListOverview = ({route}) => {
   const [openEditFilm, setOpenEditFilm] = useState(false)
   const [isChanged, setIsChanged] = useState(false)
   const [listName, setListName] = useState(title || '')
-
   const [listData, setListData] = useState({})
   const [selectFilm, setSelectFilm] = useState({})
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
-  const {isDarkTheme} = useTheme()
+  const {isDarkTheme,i18n} = useTheme()
   const {getUserLists} = useAuth()
   let row = []
   let swipe
@@ -67,6 +66,7 @@ const ListOverview = ({route}) => {
   const getList = () => {
     getListById(id).then(res => {
       if (res.success) {
+
         setListData(res?.list)
         setLoading(false)
       }
@@ -195,7 +195,7 @@ const ListOverview = ({route}) => {
           }
           <View style={{...styles.betweenRow}}>
             {!isEdit ? <TouchableOpacity style={styles.edit} onPress={() => setIsEdit(true)}>
-                <Text style={{color: 'black', marginRight: normalize(10)}}>Rename</Text>
+                <Text style={{color: 'black', marginRight: normalize(10)}}>{i18n.t('rename')}</Text>
                 <Feather name={'edit'} color={'black'} size={18}/>
               </TouchableOpacity> :
               <TextInput value={listName} onChangeText={setListName} style={styles.nameInput}/>}
@@ -204,7 +204,7 @@ const ListOverview = ({route}) => {
                 {/*<AntDesign name="check"*/}
                 {/*           size={18}*/}
                 {/*           color={'white'}/>*/}
-                <Text style={{fontSize: normalize(16), color: 'white'}}>Save</Text>
+                <Text style={{fontSize: normalize(16), color: 'white'}}>{i18n.t('save')}</Text>
               </TouchableOpacity> :
               <TouchableOpacity style={{...styles.edit, backgroundColor: MAIN_RED}} onPress={() => setIsAlert(true)}>
                 <AntDesign name="delete"
@@ -233,7 +233,11 @@ const ListOverview = ({route}) => {
                           setSelectFilm(item)
                           setOpenEditFilm(true)
                         }
-                        } onPress={()=>navigation.navigate('FilmOverview',{title:item.title,id:item.imdb_id})}/>
+                        } onPress={()=>{
+                          if (item?.isSerial){
+                            navigation.navigate('SerialOverview',{title:item.title,id:item?.imdb_id})
+                          }else navigation.navigate('FilmOverview',{title:item.title,id:item?.imdb_id})
+                        }}/>
                       }
                       }/>
 
@@ -261,8 +265,8 @@ const OneImage = ({listData, name}) => {
               adjustsFontSizeToFit>{name}</Text>}
       <View style={styles.imgTitleRow}>
         <Text style={styles.imgTitle} numberOfLines={2} adjustsFontSizeToFit>{listData?.name}</Text>
-        <Text style={styles.white16} numberOfLines={1}
-              adjustsFontSizeToFit>Subscribers: {listData?.subscribers?.length}</Text>
+        {/*<Text style={styles.white16} numberOfLines={1}*/}
+        {/*      adjustsFontSizeToFit>Subscribers: {listData?.subscribers?.length}</Text>*/}
       </View>
 
     </ImageBackground>
@@ -278,36 +282,35 @@ const Collage = ({listData, name}) => {
         const source = {uri: IMG_URI + item?.poster};
         if (item?.poster) {
           return (
-
             <Image key={index} source={source} style={{width: '50%', height: normalize(150)}}
                    resizeMode={'cover'}/>
-
           )
         }
       })}
       <View style={styles.imgTitleRow}>
         <Text style={styles.imgTitle} numberOfLines={2} adjustsFontSizeToFit>{name}</Text>
-        <Text style={styles.white16} numberOfLines={1}
-              adjustsFontSizeToFit>Subscribers: {listData?.subscribers?.length}</Text>
+        {/*<Text style={styles.white16} numberOfLines={1}*/}
+        {/*      adjustsFontSizeToFit>Subscribers: {listData?.subscribers?.length}</Text>*/}
       </View>
     </View>
   )
 }
 const DeleteAlert = ({isAlert, setIsAlert, listData, deleteList}) => {
-  const {isDarkTheme} = useTheme()
+  const {isDarkTheme,i18n} = useTheme()
   const [deleting, setDeleting] = useState(false)
   return (
     isAlert && <AwesomeAlert
       show={isAlert}
       showProgress={false}
-      title="Are you sure?"
-      message={`Delete watchlist ${listData.name}?`}
+      title={i18n.t('areYouSure')}
+      message={`${i18n.t('deleteWatchList')} ${listData.name}?`}
       closeOnTouchOutside={true}
       closeOnHardwareBackPress={false}
       showCancelButton={true}
       showConfirmButton={true}
-      cancelText="No, cancel"
-      confirmText={deleting ? 'Deleting...' : "Yes, delete it"}
+      cancelText={i18n.t('noCancel')}
+      successText={i18n.t('success')}
+      confirmText={deleting ? i18n.t('deleting') : i18n.t('yesDelete')}
       confirmButtonColor={isDarkTheme ? '#DAA520' : "#DC143C"}
       contentContainerStyle={{
         width: isAlert ? normalize(300) : 0,
@@ -317,13 +320,12 @@ const DeleteAlert = ({isAlert, setIsAlert, listData, deleteList}) => {
         backgroundColor: isDarkTheme ? '#333333' : 'white',
         borderColor: isDarkTheme ? '#DAA520' : "#DC143C",
         borderWidth: 1,
-
       }}
       titleStyle={{fontSize: normalize(30), color: isDarkTheme ? 'white' : 'black'}}
       messageStyle={{fontSize: 15, color: isDarkTheme ? 'white' : 'black'}}
-      cancelButtonStyle={{width: 100, alignItems: 'center', height: normalize(50), justifyContent: 'center'}}
+      cancelButtonStyle={{  alignItems: 'center', height: normalize(50), justifyContent: 'center'}}
       cancelButtonTextStyle={{fontSize: 14}}
-      confirmButtonStyle={{width: 100, alignItems: 'center', height: normalize(50), justifyContent: 'center'}}
+      confirmButtonStyle={{  alignItems: 'center', height: normalize(50), justifyContent: 'center'}}
       confirmButtonTextStyle={{fontSize: 13}}
       onCancelPressed={() => {
 

@@ -1,12 +1,14 @@
 import React from 'react';
 import {StyleSheet, Text, View} from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
-import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED} from "../../constants";
+import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED} from "../../constants/colors";
 import {Dropdown} from "react-native-element-dropdown";
 import {normalize} from "../../responsive/fontSize";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import {useTheme} from "../../providers/ThemeProvider";
 
 const SortRateDropdown = ({value,setValue,filters}) => {
+  const {i18n}=useTheme()
   const renderItem = item => {
     return (
       <View style={styles.item}>
@@ -38,7 +40,7 @@ const SortRateDropdown = ({value,setValue,filters}) => {
                     <AntDesign name={'star'} color={MAIN_RED} style={styles.star}/>
                   </View>:<View style={styles.row}>
                     <AntDesign name={'staro'} color={MAIN_GREY} style={styles.star}/>
-                    <Text style={{fontSize:normalize(16),color:MAIN_GREY}}>All</Text>
+                    <Text style={{fontSize:normalize(16),color:MAIN_GREY}}>{i18n.t('all')}</Text>
                   </View>
 
         }

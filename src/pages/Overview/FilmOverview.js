@@ -23,12 +23,12 @@ import {useIsFocused, useNavigation} from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import GetFilms from "../../api/GetFilms";
 import {IMG_URI, NONAME_IMG} from "../../api/apiKey";
-import {MAIN_GREY, MAIN_RED, MAIN_SUCCESS} from "../../constants";
+import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED, MAIN_SUCCESS} from "../../constants/colors";
 import {useDispatch} from "react-redux";
 import {normalize} from "../../responsive/fontSize";
 import LinearGradient from "react-native-linear-gradient";
 import AnimatedHeader from "../../components/UI/AnimatedHeader";
-import Loading from "../../components/Loading";
+import Loading from "../../components/UI/Loading";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import imdb from "../../assets/imdb.png"
 import rt from "../../assets/rottenTomatoes.png"
@@ -44,9 +44,10 @@ import RateInfoModal from "../../components/filmModals/RateInfoModal";
 import TrailerModal from "../../components/Films/TrailerModal";
 import {getFilm, getReviews} from "../../api/films";
 import Review from "./Review";
-import {styles} from "./styles";
+import {style} from "./style";
 import Orientation, {LANDSCAPE, OrientationLocker, PORTRAIT} from 'react-native-orientation-locker';
 import FilmModal from "../../components/Films/FIilmModal";
+import {themeColors} from "./themeColors";
 const FilmOverview = ({route}) => {
   const [isLoading, setLoading] = useState(true);
   const [state, setState] = useState({
@@ -65,7 +66,8 @@ const FilmOverview = ({route}) => {
   const [trailer, setTrailer] = useState([]);
 
   const [chosenFilm, setChosenFilm] = useState({})
-  const {screenTheme, isDarkTheme} = useTheme();
+  const {screenTheme, isDarkTheme,i18n,appTheme} = useTheme();
+  const styles = style(themeColors[appTheme])
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const details = screenTheme;
@@ -82,19 +84,19 @@ const FilmOverview = ({route}) => {
   const scrolling = React.useRef(new Animated.Value(0)).current;
   const boxInterpolation = scrolling.interpolate({
     inputRange: [0, 100],
-    outputRange: ["rgb(255,255,255)", "rgba(255,255,255,0)"],
+    outputRange: themeColors[appTheme].boxInterpolation,
   })
   const animatedStyle = {
     backgroundColor: boxInterpolation
   }
   const headerBgColor = scrollY.interpolate({
     inputRange: [0, normalize(100), normalize(200)],
-    outputRange: ['transparent', 'rgba(255, 255, 255, 0.4)', 'rgba(255, 255, 255, 1)'],
+    outputRange: themeColors[appTheme].headerBgColor,
     extrapolate: 'clamp',
   });
   const arrowColor = scrollY.interpolate({
     inputRange: [0, normalize(100), normalize(200)],
-    outputRange: ['rgba(255, 255, 255, 1)', 'rgba(0, 0, 0, 0.4)', 'rgba(0, 0, 0, 1)'],
+    outputRange: themeColors[appTheme].arrowColor,
     extrapolate: 'clamp',
   });
   const headerOpacity = scrollY.interpolate({
@@ -161,9 +163,9 @@ const FilmOverview = ({route}) => {
       // setLoading(false)
     }
   }, []);
-  useEffect(()=>{
-    !openVideo?Orientation.lockToPortrait():Orientation.lockToLandscape()
-  },[openVideo])
+  // useEffect(()=>{
+  //   !openVideo?Orientation.lockToPortrait():Orientation.lockToLandscape()
+  // },[openVideo])
   const [playing, setPlaying] = useState(false);
   const onStateChange = useCallback((state) => {
     if (state === "ended") {
@@ -194,7 +196,7 @@ const FilmOverview = ({route}) => {
           <ImageBackground source={{uri: IMG_URI + state.selected.backdrop_path}} blurRadius={1}
                            style={{width: '100%', height: normalize(270)}}>
             <LinearGradient
-              colors={['transparent', 'transparent', 'rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 1)']}
+              colors={themeColors[appTheme].posterGradient}
               style={styles.gradient}>
             </LinearGradient>
           </ImageBackground>
@@ -213,14 +215,14 @@ const FilmOverview = ({route}) => {
                   fontWeight: '500',
                   marginTop: normalize(20)
                 }}>{state.selected?.release_date?.split('-')[0]} <Text
-                  style={{color: MAIN_RED}}>●</Text> {state.selected.runtime} хв
+                  style={{color: themeColors[appTheme].dotColor}}>●</Text> {state.selected.runtime} хв
                 </Text>
                 <TouchableOpacity style={styles.whiteButton} onPress={()=>{
                   Linking.openURL(`https://www.youtube.com/embed/${trailer[0]?.key}`);
                   // setOpenTrailer(true)
                 }}>
-                  <Text style={styles.text}>Трейлер</Text>
-                  <FontAwesome5 name={'play'} color={MAIN_RED} style={{marginLeft: normalize(10)}}/>
+                  <Text style={{...styles.text,color:'black'}}>{i18n.t('trailer')}</Text>
+                  <FontAwesome5 name={'play'} color={themeColors[appTheme].dotColor} style={{marginLeft: normalize(10)}}/>
                 </TouchableOpacity>
 
               </View>
@@ -233,14 +235,14 @@ const FilmOverview = ({route}) => {
               <View style={{marginTop: normalize(10)}}>
                 <Text style={styles.text} numberOfLines={openReview ? 0 : 3}>{state.selected?.overview}</Text>
                 <Pressable style={{alignSelf: 'center'}} onPress={() => setOpenReview(!openReview)}>
-                  {openReview ? <Text style={{...styles.text, color: MAIN_RED}}>Приховати</Text> :
-                    <MaterialIcons name={'more-horiz'} color={MAIN_RED} size={normalize(40)}/>}
+                  {openReview ? <Text style={{...styles.text, color: themeColors[appTheme].dotColor}}>{i18n.t('hide')}</Text> :
+                    <MaterialIcons name={'more-horiz'} color={themeColors[appTheme].dotColor} size={normalize(40)}/>}
                 </Pressable>
               </View>
 
             </View>}
             <View style={{flex: 1, paddingTop: normalize(20)}}>
-              <Text style={{...styles.tagline, fontSize: normalize(18)}}>Рейтинги:</Text>
+              <Text style={{...styles.tagline, fontSize: normalize(18)}}>{i18n.t('ratings')}:</Text>
               <View style={{width: '100%', marginTop: normalize(15)}}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   {/*<Image source={tmdb} style={{width:normalize(25),height:normalize(25)}}/>*/}
@@ -270,19 +272,19 @@ const FilmOverview = ({route}) => {
             <View style={{marginTop: normalize(50)}}>
               <View style={styles.rowBetween}>
                 <TouchableOpacity
-                  style={{...styles.switchButton, borderColor: switchButton === 'cast' ? MAIN_RED : MAIN_GREY}}
+                  style={{...styles.switchButton, borderColor: switchButton === 'cast' ? themeColors[appTheme].dotColor : MAIN_GREY_FADE}}
                   onPress={() => setSwitchButton('cast')}>
-                  <Text style={styles.text}>Команда</Text>
+                  <Text style={styles.text}>{i18n.t('team')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={{...styles.switchButton, borderColor: switchButton === 'details' ? MAIN_RED : MAIN_GREY}}
+                  style={{...styles.switchButton, borderColor: switchButton === 'details' ? themeColors[appTheme].dotColor : MAIN_GREY_FADE}}
                   onPress={() => setSwitchButton('details')}>
-                  <Text style={styles.text}>Деталі</Text>
+                  <Text style={styles.text}>{i18n.t('details')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={{...styles.switchButton, borderColor: switchButton === 'genre' ? MAIN_RED : MAIN_GREY}}
+                  style={{...styles.switchButton, borderColor: switchButton === 'genre' ? themeColors[appTheme].dotColor : MAIN_GREY_FADE}}
                   onPress={() => setSwitchButton('genre')}>
-                  <Text style={styles.text}>Жанри</Text>
+                  <Text style={styles.text}>{i18n.t('genres')}</Text>
                 </TouchableOpacity>
 
               </View>
@@ -292,14 +294,14 @@ const FilmOverview = ({route}) => {
 
             </View>
             {reviews?.all?.length>0&&<View style={{marginTop: normalize(50),marginBottom:normalize(20)}}>
-              <Text style={styles.castTitle}>Reviews:</Text>
+              <Text style={styles.castTitle}>{i18n.t('reviews')}:</Text>
               {reviews?.all?.slice(0,4)?.map((item,index)=>{
                 return (
                   <Review item={item} key={index}/>
                 )
               })}
               <TouchableOpacity onPress={()=>navigation.navigate('Reviews',{reviews:reviews,title:state.selected.title})}>
-                <Text style={{...styles.text,textAlign:'center',fontWeight:'600',fontSize:normalize(18)}}>All reviews</Text>
+                <Text style={{...styles.text,textAlign:'center',fontWeight:'600',fontSize:normalize(18)}}>{i18n.t('allReviews')}</Text>
               </TouchableOpacity>
 
             </View>}

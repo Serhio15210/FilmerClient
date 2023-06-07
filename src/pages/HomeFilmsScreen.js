@@ -10,6 +10,9 @@ import MyHomeLists from "../components/MyHomeLists";
 import ScreenWrapper from "../components/wrapper/ScreenWrapper";
 import {useDispatch, useSelector} from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {useTheme} from "../providers/ThemeProvider";
+import {themeColors} from "./Auth/themeColors";
+import {form} from "./Auth/Login";
 
 
 const HomeFilmsScreen = ({navigation}) => {
@@ -21,10 +24,12 @@ const HomeFilmsScreen = ({navigation}) => {
     const { getUserInfo,getUserLists,getUserNotifications}=useAuth()
     const [isLoading, setLoading] = useState(true);
     const dispatch = useDispatch();
+  const {isDarkTheme,i18n,locale,appTheme} = useTheme()
     const {
         refresh,user
     } = useSelector((state) => state.auth);
     const isFocused = useIsFocused();
+
   const getRecommendCache = async () => {
     try {
       const jsonData = await AsyncStorage.getItem('recommendFilms');
@@ -93,14 +98,8 @@ const HomeFilmsScreen = ({navigation}) => {
             componentMounted.current = false; // (4) set it to false when we leave the page
         }
 
-    }, []);
-    const {width: windowWidth} = useWindowDimensions();
-    // useEffect(()=>{
-    //
-    //     if (isFocused){
-    //         getUserLists()
-    //     }
-    // },[isFocused])
+    }, [locale]);
+
     return (
       <ScreenWrapper refreshing={()=>{
           setLoading(true)
@@ -110,15 +109,14 @@ const HomeFilmsScreen = ({navigation}) => {
           getUserNotifications()
       }}>
         <ScrollView
-
             style={{height: '100%'}}
         >
 
-            <MenuFilmsList data={soonData} name="Скоро у кіно!" navigation={navigation} isLoading={isLoading}/>
-            <MenuFilmsList data={premierData} name={"Прем'єри"} isLoading={isLoading}/>
-            <MenuFilmsList data={popularData} name={"Зараз дивляться"} isLoading={isLoading}/>
+            <MenuFilmsList data={soonData} name={i18n.t("soonInCinema")} navigation={navigation} isLoading={isLoading}/>
+            <MenuFilmsList data={premierData} name={i18n.t("premiers")} isLoading={isLoading}/>
+            <MenuFilmsList data={popularData} name={i18n.t("nowWatching")} isLoading={isLoading}/>
           {recommendData?.length > 0 &&
-            <MenuFilmsList data={recommendData} name="Рекомендації" navigation={navigation} isLoading={isLoading}/>}
+            <MenuFilmsList data={recommendData} name={i18n.t("recommendations")} navigation={navigation} isLoading={isLoading}/>}
             <MyHomeLists/>
         </ScrollView>
       </ScreenWrapper>

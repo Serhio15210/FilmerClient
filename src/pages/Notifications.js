@@ -1,10 +1,10 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {MAIN_GREY_FADE, MAIN_RED, MAIN_RED_FADE} from "../constants";
+import {MAIN_GREY_FADE, MAIN_RED, MAIN_RED_FADE} from "../constants/colors";
 import {normalize} from "../responsive/fontSize";
 import Review from "./Overview/Review";
 import {useSelector} from "react-redux";
-import RateStars from "../components/RateStars";
+import RateStars from "../components/UI/RateStars";
 import {readNotification} from "../api/notifications";
 import moment from 'moment'
 
@@ -47,6 +47,7 @@ const Notifications = ({navigation}) => {
           viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
           viewabilityConfig={{viewAreaCoveragePercentThreshold: 95}}
           data={notifications}
+          contentContainerStyle={{paddingTop:normalize(10)}}
           renderItem={({item, index}) => {
             return (
               <Pressable style={{

@@ -5,6 +5,7 @@ import ListPreview from "./ListPreview";
 import {useSelector} from "react-redux";
 import {useNavigation} from "@react-navigation/native";
 import {normalize} from "../../responsive/fontSize";
+import {useTheme} from "../../providers/ThemeProvider";
 
 const ListsRow = () => {
   const {

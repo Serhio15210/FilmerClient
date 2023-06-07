@@ -9,7 +9,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {useNavigation} from "@react-navigation/native";
 import unknown from "../../styles/unknown.png"
 import {IMG_URI} from "../../api/apiKey";
-import {MAIN_GREY, MAIN_GREY_FADE, MAIN_SUCCESS} from "../../constants";
+import {MAIN_GREY, MAIN_GREY_FADE, MAIN_SUCCESS} from "../../constants/colors";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Swipable from "react-native-gesture-handler/Swipeable"
 import {normalize} from "../../responsive/fontSize";

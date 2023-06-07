@@ -1,6 +1,6 @@
 import {StyleSheet} from "react-native";
 import {normalize} from "../../../responsive/fontSize";
-import {MAIN_RED} from "../../../constants";
+import {MAIN_RED} from "../../../constants/colors";
 
 export const styles = StyleSheet.create({
 

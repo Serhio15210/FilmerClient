@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {MultiSelect} from "react-native-element-dropdown";
-import {RadioButton, useTheme} from "react-native-paper";
+import {RadioButton } from "react-native-paper";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {normalize} from "../../responsive/fontSize";
-import {MAIN_RED} from "../../constants";
-import {data} from "../../constants/genres";
+import {MAIN_RED} from "../../constants/colors";
+import {data, dataEng} from "../../constants/genres";
+import {useTheme} from "../../providers/ThemeProvider";
 
 
 const FilterDropdown = ({
@@ -27,7 +28,7 @@ const FilterDropdown = ({
   const [checked, setChecked] = useState('not see');
 
 
-  const {isDarkTheme} = useTheme()
+  const {isDarkTheme,i18n,locale} = useTheme()
 
   let years = []
   for (let i = new Date().getFullYear(); i >= 1881; i--) {
@@ -53,7 +54,7 @@ const FilterDropdown = ({
 
       <View style={styles.radioButtonBlock}>
         <View style={styles.row}>
-          <Text style={styles.radioButton}>Фильм</Text>
+          <Text style={styles.radioButton}>{i18n.t('film')}</Text>
           <RadioButton value="name"
                        status={filter === 'movie' ? 'checked' : 'unchecked'}
                        onPress={() => {
@@ -67,7 +68,7 @@ const FilterDropdown = ({
                        }} color={"white"} uncheckedColor={"white"}/>
         </View>
         <View style={styles.row}>
-          <Text style={styles.radioButton}>Сериал</Text>
+          <Text style={styles.radioButton}>{i18n.t('serial')}</Text>
           <RadioButton value="serial"
                        status={filter === 'serial' ? 'checked' : 'unchecked'}
                        onPress={() => {
@@ -81,7 +82,7 @@ const FilterDropdown = ({
                        }} color={'white'} uncheckedColor={'white'}/>
         </View>
         <View style={styles.row}>
-          <Text style={styles.radioButton}>Актёр</Text>
+          <Text style={styles.radioButton}>{i18n.t('actor')}</Text>
           <RadioButton value="actor"
                        status={filter === 'actor' ? 'checked' : 'unchecked'}
                        onPress={() => {
@@ -111,10 +112,10 @@ const FilterDropdown = ({
               activeColor={isDarkTheme ? "#DAA520" : "#DC143C"}
               labelField="name"
               valueField="name"
-              placeholder="Выберите год"
+              placeholder={i18n.t('chooseYear')}
               value={selectedYear}
               search
-              searchPlaceholder="Поиск..."
+              searchPlaceholder={i18n.t('searchPlh')}
               onChange={item => {
                 setSelectedYear(item);
               }}
@@ -144,15 +145,15 @@ const FilterDropdown = ({
               selectedTextStyle={styles.selectedTextStyle}
               inputSearchStyle={styles.inputSearchStyle}
               iconStyle={styles.iconStyle}
-              data={data}
+              data={locale==='ukr'?data:dataEng}
               activeColor={isDarkTheme ? "#DAA520" : "#DC143C"}
 
               labelField="name"
               valueField="id"
-              placeholder="Выбрать жанр"
+              placeholder={i18n.t('chooseGenre')}
               value={selectedDate}
               search
-              searchPlaceholder="Поиск..."
+              searchPlaceholder={i18n.t('searchPlh')}
               onChange={item => {
                 setSelectedDate(item);
               }}
@@ -184,7 +185,7 @@ const FilterDropdown = ({
         justifyContent: 'center',
         height: normalize(50)
       }} onPress={onPress}>
-        <Text style={{color: MAIN_RED, fontWeight: '600', fontSize: normalize(18)}}>Search</Text>
+        <Text style={{color: MAIN_RED, fontWeight: '600', fontSize: normalize(18)}}>{i18n.t('search')}</Text>
       </TouchableOpacity>
       <TouchableOpacity style={{
         width: '100%',
@@ -199,7 +200,7 @@ const FilterDropdown = ({
         setSelectedYear([])
         setIsFilter(false)
       }}>
-        <Text style={{color: MAIN_RED, fontWeight: '600', fontSize: normalize(18)}}>Reset</Text>
+        <Text style={{color: MAIN_RED, fontWeight: '600', fontSize: normalize(18)}}>{i18n.t('reset')}</Text>
       </TouchableOpacity>
         </>}
     </View>

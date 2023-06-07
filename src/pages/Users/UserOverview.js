@@ -5,22 +5,24 @@ import {useNavigation} from "@react-navigation/native";
 import {getActivities, getProfile, subscribeUser, unsubscribeUser} from "../../api/auth";
 import {setUser} from "../../redux/authReducer";
 import {getRateStats} from "../../api/films";
-import Loading from "../../components/Loading";
+import Loading from "../../components/UI/Loading";
 import {FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {normalize} from "../../responsive/fontSize";
 import Feather from "react-native-vector-icons/Feather";
 import {IMG_URI, NONAME_IMG} from "../../api/apiKey";
 import {AirbnbRating} from "react-native-ratings";
-import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED, MAIN_SUCCESS} from "../../constants";
-import RatingStats from "../../components/RatingStats";
+import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED, MAIN_SUCCESS} from "../../constants/colors";
+import RatingStats from "../../components/UI/RatingStats";
 import {removeToken} from "../../utils/storage";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {getUserProfile} from "../../api/users";
 import {getUserList} from "../../api/lists";
 import {styles} from "../Profile/styles/profileStyles"
+import {useTheme} from "../../providers/ThemeProvider";
 const UserOverview = ({route}) => {
   const {user}=useSelector(state => state.auth)
   const dispatch = useDispatch()
+  const {i18n}=useTheme()
   const navigation = useNavigation()
   const [userInfo, setUserInfo] = useState({})
   const [loading, setLoading] = useState(true)
@@ -100,7 +102,7 @@ const UserOverview = ({route}) => {
           </View>
 
           <View style={styles.block}>
-            <Text style={styles.title}>recent activity</Text>
+            <Text style={styles.title}>{i18n.t('recentActivity')}</Text>
             <FlatList showsHorizontalScrollIndicator={false} horizontal data={activities}
                       contentContainerStyle={{marginTop: normalize(10)}} renderItem={({item, index}) => {
               return (<TouchableOpacity key={index} style={{marginRight: normalize(15)}} onPress={()=>navigation.navigate(item?.isSerial?'SerialOverview':'FilmOverview', {id: item?.imdb_id,title:item?.title})}>
@@ -119,25 +121,25 @@ const UserOverview = ({route}) => {
             }}/>
           </View>
           <View style={styles.block}>
-            <Text style={styles.title}>ratings</Text>
+            <Text style={styles.title}>{i18n.t('ratings')}</Text>
             <RatingStats data={rateStats}/>
           </View>
           <View style={styles.block}>
             <Text style={styles.title}>Details</Text>
             <TouchableOpacity style={styles.detailRow} onPress={() => navigation.navigate('UserFilmsScreen',{id:route.params.id,title:userInfo?.userName})}>
-              <Text style={styles.text}>Films</Text>
+              <Text style={styles.text}>{i18n.t('films')}</Text>
               <Text style={styles.text}>{rateStats?.all}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.detailRow} onPress={() => navigation.navigate('AllListsScreen',{id:route.params.id,title:userInfo.userName})}>
-              <Text style={styles.text}>Lists</Text>
+              <Text style={styles.text}>{i18n.t('lists')}</Text>
               <Text style={styles.text}>{listCount}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.detailRow} onPress={()=>navigation.navigate('Subscribers',{id:route.params.id})}>
-              <Text style={styles.text}>Subscribers</Text>
+              <Text style={styles.text}>{i18n.t('subscribers')}</Text>
               <Text style={styles.text}>{userInfo?.subscribers?.length}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.detailRow} onPress={()=>navigation.navigate('Subscriptions',{id:route.params.id})}>
-              <Text style={styles.text}>Subscriptions</Text>
+              <Text style={styles.text}>{i18n.t('subscriptions')}</Text>
               <Text style={styles.text}>{userInfo?.subscriptions?.length}</Text>
             </TouchableOpacity>
           </View>

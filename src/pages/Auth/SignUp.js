@@ -2,28 +2,32 @@ import React, {useEffect, useState} from "react";
 
 // UI elements
 import {
-  View,
+  ActivityIndicator,
+  Animated,
+  Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
-  ScrollView,
-  KeyboardAvoidingView, Alert, ActivityIndicator, Image, Animated
+  View
 } from "react-native";
 
 
 // Custom styles
-import {basic, form, colors} from "../styles";
+
 import {useAuth} from "../../providers/AuthProvider";
 
 import {useTheme} from "../../providers/ThemeProvider";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import logo from "../../assets/logo.png";
-import {header} from "./Login";
+import {form, header} from "./Login";
 import {normalize} from "../../responsive/fontSize";
 import {signUp} from "../../api/auth";
-
+import Toast from "react-native-toast-message";
+import {themeColors} from "./themeColors";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 
 const Signup = ({navigation}) => {
@@ -34,12 +38,15 @@ const Signup = ({navigation}) => {
   const [rePassword, setRePassword] = useState("");
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showRePassword, setShowRePassword] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [translateY, setTranslateY] = useState(new Animated.Value(normalize(300)))
   const [paddingBottom, setPaddingBottom] = useState(new Animated.Value(normalize(45)))
 
-  const {isDarkTheme} = useTheme()
-  const {isNewUser,setIsNewUser}=useAuth()
+  const {isDarkTheme, i18n, appTheme} = useTheme()
+  const {isNewUser, setIsNewUser} = useAuth()
+  const style = form(themeColors[appTheme]);
+  const headerStyle = header(themeColors[appTheme]);
   const handleSubmit = async () => {
 
     if (
@@ -54,8 +61,8 @@ const Signup = ({navigation}) => {
     } else {
       setLoading(true)
       try {
-        const response=await signUp(username,email, password)
-        if (response?.success){
+        const response = await signUp(username, email, password)
+        if (response?.success) {
           // SweetAlert.showAlertWithOptions({
           //   title: `User ${username} was successfully created`,
           //   subTitle: '',
@@ -66,9 +73,15 @@ const Signup = ({navigation}) => {
           //   otherButtonColor: '#dedede',
           //   cancellable: true
           // })
+          Toast.show({
+            type: 'success',
+            // And I can pass any custom props I want
+            text1: i18n.t('successReg'),
+          });
+
           setIsNewUser(true)
           navigation.goBack()
-        }else {
+        } else {
           setMessage(response.toString())
         }
 
@@ -137,19 +150,19 @@ const Signup = ({navigation}) => {
   }, []);
   return (
 
-    <View style={{flex: 1}}>
-      <Animated.View style={{...header.container, height: translateY, paddingBottom: paddingBottom}}>
-        <View style={header.inner}>
+    <View style={{flex: 1,backgroundColor:themeColors[appTheme].backgroundColor}}  >
+      <Animated.View style={{...headerStyle.container, height: translateY, paddingBottom: paddingBottom}}>
+        <View style={headerStyle.inner}>
           <Text style={{
-            ...header.title,
+            ...headerStyle.title,
             color: !isDarkTheme ? 'white' : 'black',
-          }}>Реєстрація</Text>
-          <View style={header.icon}>
+          }}>{i18n.t('registration')}</Text>
+          <View style={headerStyle.icon}>
             <AntDesign name={'adduser'} color={'white'} size={50}/>
           </View>
 
         </View>
-        <View style={header.logo}>
+        <View style={headerStyle.logo}>
           <Image source={logo} style={{width: '100%', height: '100%'}} resizeMode={'contain'}/>
         </View>
       </Animated.View>
@@ -161,31 +174,26 @@ const Signup = ({navigation}) => {
           enabled
         >
 
-
-          <View style={form.field}>
-            <Text style={{...form.label, color: isDarkTheme ? 'white' : 'black'}}>Нікнейм</Text>
+          <View style={style.field}>
+            <Text style={{...style.label}}>{i18n.t('nickName')}</Text>
             <TextInput
               onChangeText={value => setUsername(value)}
               name="username"
               style={{
-                ...form.input,
-                color: isDarkTheme ? 'white' : 'black',
-                borderBottomColor: isDarkTheme ? 'white' : 'black'
+                ...style.input
               }}
               value={username}
               autoCapitalize="none"
             />
           </View>
 
-          <View style={form.field}>
-            <Text style={{...form.label, color: isDarkTheme ? 'white' : 'black'}}>Пошта</Text>
+          <View style={style.field}>
+            <Text style={{...style.label}}>{i18n.t('email')}</Text>
             <TextInput
               onChangeText={value => setEmail(value)}
               name="email"
               style={{
-                ...form.input,
-                color: isDarkTheme ? 'white' : 'black',
-                borderBottomColor: isDarkTheme ? 'white' : 'black'
+                ...style.input,
               }}
               value={email}
               autoCapitalize="none"
@@ -193,53 +201,62 @@ const Signup = ({navigation}) => {
             />
           </View>
 
-          <View style={form.field}>
-            <Text style={{...form.label, color: isDarkTheme ? 'white' : 'black'}}>Пароль</Text>
-            <TextInput
-              onChangeText={value => setPassword(value)}
-              name="password"
-              style={{
-                ...form.input,
-                color: isDarkTheme ? 'white' : 'black',
-                borderBottomColor: isDarkTheme ? 'white' : 'black'
-              }}
-              secureTextEntry={!showPassword}
-              value={password}
-              autoCapitalize="none"
-            />
+          <View style={style.field}>
+            <Text style={{...style.label}}>{i18n.t('password')}</Text>
+            <View style={style.passwordBlock}>
+              <TextInput
+                onChangeText={value => setPassword(value)}
+                name="password"
+                style={{
+                  ...style.input,
+                  borderBottomColor: 'transparent',
+                  width: '90%',
+                }}
+                secureTextEntry={!showPassword}
+                value={password}
+                autoCapitalize="none"
+              />
+              <FontAwesome5 name={!showPassword ? 'eye-slash' : 'eye'} color={'black'} style={style.eye} onPress={() => {
+                setShowPassword(!showPassword)
+              }}/>
 
+            </View>
           </View>
 
-          <View style={form.field}>
-            <Text style={{...form.label, color: isDarkTheme ? 'white' : 'black'}}>Підтвердження паролю</Text>
-            <TextInput
-              onChangeText={value => setRePassword(value)}
-              name="rePassword"
-              style={{
-                ...form.input,
-                color: isDarkTheme ? 'white' : 'black',
-                borderBottomColor: isDarkTheme ? 'white' : 'black'
-              }}
-              secureTextEntry={!showPassword}
-              value={rePassword}
-              autoCapitalize="none"
-            />
+          <View style={style.field}>
+            <Text style={{...style.label}}>{i18n.t('passConfirm')}</Text>
+            <View style={style.passwordBlock}>
+              <TextInput
+                onChangeText={value => setRePassword(value)}
+                name="password"
+                style={{
+                  ...style.input,
+                  borderBottomColor: 'transparent',
+                  width: '90%',
+                }}
+                secureTextEntry={!showRePassword}
+                value={rePassword}
+                autoCapitalize="none"
+              />
+            <FontAwesome5 name={!showRePassword ? 'eye-slash' : 'eye'} color={'black'} style={style.eye} onPress={() => {
+              setShowRePassword(!showRePassword)
+            }}/>
+            </View>
           </View>
-          {message && <Text style={form.message}>{message}</Text>}
+          {message && <Text style={style.message}>{message}</Text>}
 
-
-          <View style={form.field}>
+          <View style={style.field}>
             <TouchableOpacity onPress={handleSubmit}
-                              disabled={!email||
-                                !username||
-                                !rePassword||
+                              disabled={!email ||
+                                !username ||
+                                !rePassword ||
                                 !password}
                               style={{
-                                ...form.button,
-                                backgroundColor:(!email||
-                                  !username||
-                                  !rePassword||
-                                  !password)?"black": isDarkTheme ? '#DAA520' : '#DC143C'
+                                ...style.button,
+                                backgroundColor: (!email ||
+                                  !username ||
+                                  !rePassword ||
+                                  !password) ? "black" : isDarkTheme ? '#DAA520' : '#DC143C'
                               }}>
               {isLoading ?
                 <View style={{
@@ -248,7 +265,7 @@ const Signup = ({navigation}) => {
                 }}>
                   <ActivityIndicator size="large"
                                      color="white"/></View> :
-                <Text style={form.buttonText}>Регістрація</Text>}
+                <Text style={style.buttonText}>{i18n.t('registration')}</Text>}
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>

@@ -1,11 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Animated, FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {getUserFilms} from "../../api/films";
-import Loading from "../../components/Loading";
+import Loading from "../../components/UI/Loading";
 import {normalize} from "../../responsive/fontSize";
 import SortDropdown from "../../components/SortDropdowns/SortDropdown";
 import SortRateDropdown from "../../components/SortDropdowns/SortRateDropdown";
-import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED, MAIN_SUCCESS} from "../../constants";
+import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED, MAIN_SUCCESS} from "../../constants/colors";
 import PageButtons from "../../components/UI/PageButtons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {FAVORITE_LIST_IMG, IMG_URI, UNKNOWN_IMG} from "../../api/apiKey";
@@ -16,6 +16,8 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import unknown from "../../styles/unknown.png";
 import {getUserList} from "../../api/lists";
 import {setUserList} from "../../redux/authReducer";
+import {useAuth} from "../../providers/AuthProvider";
+import {useTheme} from "../../providers/ThemeProvider";
 
 const AllListsScreen = ({navigation,route}) => {
   const [lists, setLists] = useState([])
@@ -23,7 +25,7 @@ const AllListsScreen = ({navigation,route}) => {
   let scrollRef = useRef(null);
   const [scrollPosition, setScrollPosition] = useState(0)
   const [scrollY] = useState(new Animated.Value(0));
-
+  const {i18n}=useTheme()
   const [loading, setLoading] = useState(true)
   // const [totalPages, setTotalPages] = useState(1)
   // const [page, setPage] = useState(1)
@@ -43,6 +45,8 @@ const AllListsScreen = ({navigation,route}) => {
       })
     }catch (e) {
       setLoading(false)
+    }finally {
+      setLoading(false)
     }
 
 
@@ -53,9 +57,9 @@ const AllListsScreen = ({navigation,route}) => {
     loading ? <Loading/> :
       <View style={styles.container}>
 
-        {lists.length === 0 ?
+        {lists?.length === 0 ?
           <View style={styles.containerCenter}>
-            <Text style={{color: MAIN_GREY_FADE}}>Списків не знайдено</Text>
+            <Text style={{color: MAIN_GREY_FADE}}>{i18n.t('listsNotFound')}</Text>
           </View>
           :
           <Animated.FlatList ref={scrollRef} data={lists} showsVerticalScrollIndicator={false}

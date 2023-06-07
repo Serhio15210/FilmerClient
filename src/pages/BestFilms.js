@@ -4,7 +4,7 @@ import {normalize} from "../responsive/fontSize";
 import OverviewFilmItem from "../components/Films/OverviewFilmItem";
 import {useTheme} from "react-native-paper";
 import GetFilms from "../api/GetFilms";
-import Loading from "../components/Loading";
+import Loading from "../components/UI/Loading";
 import PageButtons from "../components/UI/PageButtons";
 
 const BestFilms = ({navigation}) => {

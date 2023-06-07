@@ -92,10 +92,11 @@ export const addFilmsToList = async (id,films) => {
 
 export const addFilmToList = async (id,film) => {
   const token=await loadToken()
+  console.log('addFilmToList',id, film)
   const locale = await AsyncStorage.getItem('locale')
   return axios.post(`${BASE_URL}/lists/addFilm`, {
-    _id:id,
-    ...film
+    listId:id,
+    ...film,
 
   }, {
     headers:{

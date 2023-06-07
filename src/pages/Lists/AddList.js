@@ -13,7 +13,7 @@ import {
 
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {useIsFocused, useNavigation} from "@react-navigation/native";
-import {createListForUser} from "../../controllers/ListController";
+
 
 import {useAuth} from "../../providers/AuthProvider";
 
@@ -21,9 +21,9 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {useTheme} from "../../providers/ThemeProvider";
 import AwesomeAlert from "react-native-awesome-alerts";
 import {normalize} from "../../responsive/fontSize";
-import {MAIN_GREY_FADE, MAIN_RED, MAIN_RED_FADE, MAIN_SUCCESS} from "../../constants";
+import {MAIN_GREY_FADE, MAIN_RED, MAIN_RED_FADE, MAIN_SUCCESS} from "../../constants/colors";
 import {ADD_LIST_IMG, IMG_URI} from "../../api/apiKey";
-import ListPoster from "../../components/ListPoster";
+import ListPoster from "../../components/UI/ListPoster";
 import FilmerButton from "../../components/UI/FilmerButton";
 import Entypo from "react-native-vector-icons/Entypo";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -38,7 +38,7 @@ import {useDispatch, useSelector} from "react-redux";
 const AddList = (props) => {
 
   const {authToken, getUserLists} = useAuth()
-  const {screenTheme, isDarkTheme} = useTheme();
+  const {screenTheme, isDarkTheme,i18n} = useTheme();
   const theme = screenTheme
   const [editName, setEditName] = useState(true)
   const [isAddFilm, setIsAddFilm] = useState(false)
@@ -130,11 +130,11 @@ const AddList = (props) => {
       <AwesomeAlert
         show={isAlert}
         showProgress={false}
-        title="Назва повинна мати мінімум 5 символів"
+        title={i18n.t('nameMustHave5Sym')}
         closeOnTouchOutside={true}
         closeOnHardwareBackPress={false}
         showCancelButton={true}
-        cancelText="Close"
+        cancelText={i18n.t('close')}
         contentContainerStyle={{
           width: normalize(300),
           height: normalize(300),
@@ -167,7 +167,7 @@ const AddList = (props) => {
       }}>
         <ListPoster list={films}/>
 
-        <TextInput style={styles.input} placeholder={`Введіть назву...`}
+        <TextInput style={styles.input} placeholder={i18n.t('enterName')}
                    placeholderTextColor={isDarkTheme ? "white" : "black"}
                    value={nameQuery}
                    onChangeText={text => setNameQuery(text)} editable={editName} multiline/>
@@ -229,7 +229,7 @@ const AddList = (props) => {
         borderRadius={10}
         backgroundDarker={'white'}
       >
-        Зберегти
+        {i18n.t('save')}
       </AwesomeButton>
 
     </View>

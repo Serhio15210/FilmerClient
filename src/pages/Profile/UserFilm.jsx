@@ -3,7 +3,7 @@ import {Image, StyleSheet, TouchableOpacity} from "react-native";
 import {normalize} from "../../responsive/fontSize";
 import {IMG_URI, UNKNOWN_IMG} from "../../api/apiKey";
 import {AirbnbRating} from "react-native-ratings";
-import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED} from "../../constants";
+import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED} from "../../constants/colors";
 
 const UserFilm = ({item,onPress}) => {
   return (

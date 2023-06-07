@@ -1,5 +1,5 @@
 import {BaseToast} from "react-native-toast-message";
-import {MAIN_RED} from "./index";
+import {MAIN_RED} from "./colors";
 import {normalize} from "../responsive/fontSize";
 import {Text, View} from "react-native";
 import React from "react";

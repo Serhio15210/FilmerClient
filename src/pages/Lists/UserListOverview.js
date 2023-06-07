@@ -19,7 +19,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import RateInfoModal from "../../components/filmModals/RateInfoModal";
 import FindFilmModal from "../../components/filmModals/FindFilmModal";
 import Feather from "react-native-vector-icons/Feather";
-import {MAIN_GREY_FADE, MAIN_RED} from "../../constants";
+import {MAIN_GREY_FADE, MAIN_RED} from "../../constants/colors";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FilmItem from "../../components/Films/FilmItem";
 import {IMG_URI} from "../../api/apiKey";
@@ -47,7 +47,7 @@ const UserListOverview = ({route}) => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
-  const {isDarkTheme} = useTheme()
+  const {isDarkTheme,i18n} = useTheme()
   const {getUserLists} = useAuth()
   let row = []
   let swipe
@@ -78,7 +78,7 @@ const UserListOverview = ({route}) => {
         </View>
         <View style={{paddingHorizontal: normalize(15), flex: 1}}>
           <Text
-            style={{...styles.imgTitle, color: 'black', fontWeight: '600', marginBottom: normalize(20)}}>Films:</Text>
+            style={{...styles.imgTitle, color: 'black', fontWeight: '600', marginBottom: normalize(20)}}>{i18n.t('films')}:</Text>
           {listData?.films?.length === 0 ?
             <TouchableOpacity style={styles.addBlock} onPress={() => setIsAddFilm(true)}>
               {/*<Text style={{textAlign: 'center', alignItems: 'center',color:'white',fontSize:normalize(18)}}>Add films </Text>*/}
@@ -89,7 +89,12 @@ const UserListOverview = ({route}) => {
                       maxToRenderPerBatch={3}
                       contentContainerStyle={{alignItems: 'center', paddingBottom: normalize(100)}}
                       renderItem={({item, index}) => {
-                        return <TouchableOpacity style={styles.block} onPress={()=>navigation.navigate('FilmOverview',{title:item.title,id:item?.imdb_id})}>
+                        return <TouchableOpacity style={styles.block} onPress={()=>{
+                          if (item?.isSerial){
+                            navigation.navigate('SerialOverview',{title:item.title,id:item?.imdb_id})
+                          }else navigation.navigate('FilmOverview',{title:item.title,id:item?.imdb_id})
+
+                        }}>
                           <Image
                             source={item?.poster?.length !== 0 && item?.poster !== null ? {uri: IMG_URI + item.poster} : unknown}
                             style={styles.img} resizeMode="cover"/>

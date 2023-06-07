@@ -5,22 +5,25 @@ import {useDispatch, useSelector} from "react-redux";
 import {useAuth} from "../../providers/AuthProvider";
 import {getActivities, getProfile} from "../../api/auth";
 import {setUser} from "../../redux/authReducer";
-import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED} from "../../constants";
+import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED} from "../../constants/colors";
 import {IMG_URI, NONAME_IMG} from "../../api/apiKey";
 import Feather from "react-native-vector-icons/Feather";
-import Loading from "../../components/Loading";
+import Loading from "../../components/UI/Loading";
 import {AirbnbRating} from "react-native-ratings";
 import {getRateStats, getUserFilms} from "../../api/films";
-import RatingStats from "../../components/RatingStats";
-import {useNavigation} from "@react-navigation/native";
+import RatingStats from "../../components/UI/RatingStats";
+import {useIsFocused, useNavigation} from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {loadToken, removeToken} from "../../utils/storage";
 import {styles} from "./styles/profileStyles"
+import {useTheme} from "../../providers/ThemeProvider";
 const ProfileScreen = () => {
   const {user,userList} = useSelector(state => state.auth)
   const {getUserInfo, authToken,setIsAuth,setAuthToken} = useAuth()
+  const {i18n}=useTheme()
   const dispatch = useDispatch()
   const navigation = useNavigation()
+  const isFocused = useIsFocused()
   const [loading, setLoading] = useState(true)
   const [activities, setActivities] = useState([])
   const [rateStats, setRateStats] = useState([])
@@ -40,7 +43,7 @@ const ProfileScreen = () => {
     }
 
     const activity = await getActivities()
-    // console.log(activity)
+    console.log(activity)
     if (activity.success) {
       setActivities(activity?.activities)
     }
@@ -50,8 +53,8 @@ const ProfileScreen = () => {
     setLoading(false)
   }
   useEffect(() => {
-    getInfo()
-  }, [])
+    isFocused&&getInfo()
+  }, [isFocused])
   return (
     loading?<Loading/>:
     <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
@@ -65,7 +68,7 @@ const ProfileScreen = () => {
 
         </View>
         <View style={styles.block}>
-          <Text style={styles.title}>recent activity</Text>
+          <Text style={styles.title}>{i18n.t('recentActivity')}</Text>
           <FlatList showsHorizontalScrollIndicator={false} horizontal data={activities} contentContainerStyle={{marginTop:normalize(10)}} renderItem={({item, index}) => {
             return (<TouchableOpacity key={index} style={{marginRight:normalize(15)}}>
               <Image source={{uri: IMG_URI + item?.poster}} style={styles.activityImg}/>
@@ -83,25 +86,25 @@ const ProfileScreen = () => {
           }}/>
         </View>
         <View style={styles.block}>
-          <Text style={styles.title}>ratings</Text>
+          <Text style={styles.title}>{i18n.t('ratings')}</Text>
           <RatingStats data={rateStats}/>
         </View>
         <View style={styles.block}>
-          <Text style={styles.title}>Details</Text>
+          <Text style={styles.title}>{i18n.t('details')}</Text>
           <TouchableOpacity style={styles.detailRow} onPress={()=>navigation.navigate('AllFilmsScreen')}>
-            <Text style={styles.text}>Films</Text>
+            <Text style={styles.text}>{i18n.t('films')}</Text>
             <Text style={styles.text}>{rateStats?.all}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.detailRow} onPress={()=>navigation.navigate('AllListsScreen',{title:user?.userName})}>
-            <Text style={styles.text}>Lists</Text>
+          <TouchableOpacity style={styles.detailRow} onPress={()=>navigation.navigate('AllListsScreen',{title:user?.userName,id:user?._id})}>
+            <Text style={styles.text}>{i18n.t('lists')}</Text>
             <Text style={styles.text}>{userList?.length}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.detailRow} onPress={()=>navigation.navigate('Subscribers',{id:user?._id})}>
-            <Text style={styles.text}>Subscribers</Text>
+            <Text style={styles.text}>{i18n.t('subscribers')}</Text>
             <Text style={styles.text}>{user?.subscribers?.length}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.detailRow} onPress={()=>navigation.navigate('Subscriptions',{id:user?._id})}>
-            <Text style={styles.text}>Subscriptions</Text>
+            <Text style={styles.text}>{i18n.t('subscriptions')}</Text>
             <Text style={styles.text}>{user?.subscriptions?.length}</Text>
           </TouchableOpacity>
         </View>
@@ -110,7 +113,7 @@ const ProfileScreen = () => {
           setAuthToken('')
           removeToken()
         }}>
-          <Text style={{color:MAIN_RED,fontWeight:'600',fontSize:normalize(18)}}>Exit <Ionicons size={15} name={'exit-outline'}/></Text>
+          <Text style={{color:MAIN_RED,fontWeight:'600',fontSize:normalize(18)}}>{i18n.t('exit')} <Ionicons size={15} name={'exit-outline'}/></Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

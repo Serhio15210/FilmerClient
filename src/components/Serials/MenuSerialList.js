@@ -18,14 +18,14 @@ import {IMG_URI} from "../../api/apiKey";
 import {normalize} from "../../responsive/fontSize";
 import LinearGradient from "react-native-linear-gradient";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import {MAIN_RED, MAIN_SUCCESS} from "../../constants";
+import {MAIN_RED, MAIN_SUCCESS} from "../../constants/colors";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AddFilmToListModal from "../filmModals/AddFilmToListModal";
 import AddFilmModal from "../filmModals/AddFilmModal";
 import {DefaultStyles} from "../../styles/defaultstyles";
 
 const MenuSerialList = ({data, name, isLoading}) => {
-  const {isDarkTheme, screenTheme} = useTheme();
+  const {isDarkTheme, screenTheme,i18n} = useTheme();
   const [isAddList, setIsAddList] = useState(false)
   const [openRateFilm, setOpenRateModal] = useState(false)
   const navigation = useNavigation()
@@ -152,7 +152,7 @@ const MenuSerialList = ({data, name, isLoading}) => {
 
             <TouchableOpacity style={{justifyContent: "center"}}
                               onPress={() => navigation.navigate("MenuFullList", {data: data, title: title,isSerial:true})}>
-              <Text style={screenTheme.viewAll}>Див.Все</Text></TouchableOpacity>
+              <Text style={screenTheme.viewAll}>{i18n.t('seeAll')}</Text></TouchableOpacity>
           </View>
           {isLoading ?
             <View style={{

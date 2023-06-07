@@ -13,19 +13,21 @@ import {
 import {normalize} from "../../responsive/fontSize";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import {useTheme} from "../../providers/ThemeProvider";
-import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED, MAIN_RED_FADE, MAIN_YELLOW} from "../../constants";
+import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED, MAIN_RED_FADE, MAIN_YELLOW} from "../../constants/colors";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import {themeColors} from "../../navigation/themeColors";
 
 
 const CustomTabBar = (props) => {
   const {selectedTab, setSelectedTab} = props;
-  const {isDarkTheme} = useTheme();
+  const {i18n,appTheme}=useTheme()
+  const styles = style(themeColors[appTheme]);
   const [showTab, setShowTab] = useState(false);
   const [homeLine, setHomeLine] = useState(new Animated.Value(0))
   const headerBgColor = homeLine.interpolate({
     inputRange: [normalize(5), normalize(50), Dimensions.get('window').width - normalize(200), Dimensions.get('window').width - normalize(20)],
-    outputRange: ['transparent', 'rgba(220, 20, 60, 0.2)', MAIN_RED_FADE, MAIN_RED],
+    outputRange: themeColors[appTheme].tabContent,
     extrapolate: 'clamp',
   });
   const handleTabPress = (tabName) => {
@@ -96,20 +98,20 @@ const CustomTabBar = (props) => {
         <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%'}}>
           <TouchableOpacity onPress={() => handleTabPress('Home')}>
             <FontAwesome5 name="film" size={normalize(30)}
-                          color={!isDarkTheme ? selectedTab === 'Home' ? colors.white : colors.greyFade : selectedTab === 'Home' ? colors.yellow : colors.grey}/>
+                          color={ selectedTab === 'Home' ? colors.white : colors.greyFade }/>
 
           </TouchableOpacity>
           <TouchableOpacity style={{marginTop: -1}} onPress={() => handleTabPress('Serial')}>
             <MaterialIcons name="live-tv" size={normalize(30)}
-                           color={!isDarkTheme ? selectedTab === 'Serial' ? colors.white : colors.greyFade : selectedTab === 'Serial' ? colors.yellow : colors.grey}/>
+                           color={selectedTab === 'Serial' ? colors.white : colors.greyFade}/>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleTabPress("Find")}>
             <FontAwesome5 name="search" size={normalize(25)}
-                          color={!isDarkTheme ? selectedTab === 'Find' ? colors.white : colors.greyFade : selectedTab === 'Find' ? colors.yellow : colors.grey}/>
+                          color={selectedTab === 'Find' ? colors.white : colors.greyFade}/>
           </TouchableOpacity>
           <TouchableOpacity style={{alignItems: 'center'}} onPress={() => handleTabPress("Users")}>
             <FontAwesome5 name="user-friends" size={normalize(30)}
-                          color={!isDarkTheme ? selectedTab === 'Users' ? colors.white : colors.greyFade : selectedTab === 'Users' ? colors.yellow : colors.grey}/>
+                          color={selectedTab === 'Users' ? colors.white : colors.greyFade}/>
           </TouchableOpacity>
         </View>
 
@@ -199,7 +201,7 @@ const CustomTabBar = (props) => {
     </View>
   );
 };
-const styles = StyleSheet.create({
+const style = (theme)=> StyleSheet.create({
   container: {
     width: '95%',
     height: normalize(65),
@@ -214,7 +216,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   },
   content: {
-    backgroundColor: MAIN_RED,
+    backgroundColor: theme.tabBackground,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -229,7 +231,7 @@ const styles = StyleSheet.create({
   },
   menu: {
     alignItems: 'center',
-    backgroundColor: MAIN_RED,
+    backgroundColor: theme.tabBackground,
     width: normalize(65),
     height: normalize(65),
     justifyContent: 'center',

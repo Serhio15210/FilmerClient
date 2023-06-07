@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import {BASE_URL} from "./apiKey";
-import useAxios from "../hooks/useAxios";
+
 import {loadToken} from "../utils/storage";
 
 export const deleteAloneFilms = async () => {

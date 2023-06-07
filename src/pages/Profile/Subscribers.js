@@ -1,21 +1,23 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useSelector} from "react-redux";
 import {Animated, FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import Loading from "../../components/Loading";
-import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED} from "../../constants";
+import Loading from "../../components/UI/Loading";
+import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED} from "../../constants/colors";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {IMG_URI} from "../../api/apiKey";
 import {normalize} from "../../responsive/fontSize";
 import {getSubscribers} from "../../api/users";
 import UserItem from "./UserItem";
 import {styles} from "./styles/subStyles"
+import {useAuth} from "../../providers/AuthProvider";
+import {useTheme} from "../../providers/ThemeProvider";
 const Subscribers = ({navigation,route}) => {
   const [subs, setSubs] = useState([])
   const {userList, user} = useSelector(state => state.auth)
   let scrollRef = useRef(null);
   const [scrollPosition, setScrollPosition] = useState(0)
   const [scrollY] = useState(new Animated.Value(0));
-
+  const {i18n}=useTheme()
   const [loading, setLoading] = useState(true)
   // const [totalPages, setTotalPages] = useState(1)
   // const [page, setPage] = useState(1)
@@ -40,7 +42,7 @@ const Subscribers = ({navigation,route}) => {
 
         {subs.length === 0 ?
           <View style={styles.containerCenter}>
-            <Text style={{color: MAIN_GREY_FADE}}>Subscribers not found</Text>
+            <Text style={{color: MAIN_GREY_FADE}}>{i18n.t('subscribersNotFound')}</Text>
           </View>
           :
           <Animated.FlatList ref={scrollRef} data={subs} showsVerticalScrollIndicator={false}

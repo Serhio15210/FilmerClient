@@ -11,16 +11,18 @@ import {
   ActivityIndicator
 } from "react-native";
 import {normalize} from "../../responsive/fontSize";
-import {data} from "../../constants/genres";
-import {MAIN_GREY, MAIN_RED} from "../../constants";
+import {data, dataEng} from "../../constants/genres";
+import {MAIN_GREY, MAIN_RED} from "../../constants/colors";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {useIsFocused, useNavigation} from "@react-navigation/native";
 import {saveFavGenres} from "../../api/auth";
 import FavoriteActors from "./FavoriteActors";
+import {useTheme} from "../../providers/ThemeProvider";
 
 const FavoriteGenres = () => {
   const navigation = useNavigation()
   const isFocused = useIsFocused()
+  const {i18n,locale} = useTheme()
   const slideUpAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim = useRef(new Animated.Value(0)).current;
   const [animate, setAnimate] = useState(false)
@@ -70,7 +72,7 @@ const FavoriteGenres = () => {
   }, [isFocused])
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Оберіть улюблені жанри:</Text>
+      <Text style={styles.title}>{i18n.t('chooseFavoriteGenres')}:</Text>
 
       <Animated.View
         style={[
@@ -90,7 +92,7 @@ const FavoriteGenres = () => {
       >
         <FlatList showsVerticalScrollIndicator={false}
                   contentContainerStyle={styles.flat}
-                  style={{width: '100%'}} data={data} numColumns={2}
+                  style={{width: '100%'}} data={locale==='ukr'?data:dataEng} numColumns={2}
                   renderItem={({item, index}) => {
                     return <TouchableOpacity style={{
                       ...styles.genre,

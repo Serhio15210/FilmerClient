@@ -1,12 +1,15 @@
 import { API_KEY } from "./apiKey";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default class GetSerials {
+
   static async getRecommendation(genres,actors) {
 
     try {
-      const responseGenres =  await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=uk&with_genres=${genres.join(',')}`);
-      const responseActors =  await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=uk&with_cast=${actors.join(',')}`);
-      const responseMix =  await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=uk&with_genres=${genres.join(',')}&with_cast=${actors.join(',')}`);
+      const locale=await AsyncStorage.getItem('locale')
+      const responseGenres =  await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=${locale==='ukr'?'uk':'en'}&with_genres=${genres.join(',')}`);
+      const responseActors =  await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=${locale==='ukr'?'uk':'en'}&with_cast=${actors.join(',')}`);
+      const responseMix =  await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=${locale==='ukr'?'uk':'en'}&with_genres=${genres.join(',')}&with_cast=${actors.join(',')}`);
       const genreData = await responseGenres.json();
       const actorsData = await responseActors.json();
       const mixData = await responseMix.json();
@@ -23,7 +26,8 @@ export default class GetSerials {
   static async getTopSerials() {
 
     try {
-      const response =  await fetch(`https://api.themoviedb.org/3/tv/top_rated?api_key=${API_KEY}&language=uk`);
+      const locale=await AsyncStorage.getItem('locale')
+      const response =  await fetch(`https://api.themoviedb.org/3/tv/top_rated?api_key=${API_KEY}&language=${locale==='ukr'?'uk':'en'}`);
       const topData = await response.json();
 
       return topData;
@@ -35,7 +39,8 @@ export default class GetSerials {
   static async getLatestSerials() {
 
     try {
-      const response =  await fetch(`https://api.themoviedb.org/3/tv/on_the_air?api_key=${API_KEY}&language=uk`);
+      const locale=await AsyncStorage.getItem('locale')
+      const response =  await fetch(`https://api.themoviedb.org/3/tv/on_the_air?api_key=${API_KEY}&language=${locale==='ukr'?'uk':'en'}`);
       const topData = await response.json();
 
       return topData;
@@ -47,7 +52,8 @@ export default class GetSerials {
   static async getPopularSerials(page) {
 
     try {
-      const response =  await fetch(`https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=uk&page=${page}`)
+      const locale=await AsyncStorage.getItem('locale')
+      const response =  await fetch(`https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=${locale==='ukr'?'uk':'en'}&page=${page}`)
       const popularData = await response.json();
 
       return popularData;
@@ -58,8 +64,8 @@ export default class GetSerials {
   }
   static async getDetailSerial(id){
     try {
-
-      const response = await fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&language=uk&append_to_response=credits`)
+      const locale=await AsyncStorage.getItem('locale')
+      const response = await fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&language=${locale==='ukr'?'uk':'en'}&append_to_response=credits`)
       const detailData = await response.json();
 
       return detailData;
@@ -70,8 +76,8 @@ export default class GetSerials {
   }
   static async getDetailSeason(id,season){
     try {
-
-      const response = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${API_KEY}&language=uk&append_to_response=credits`)
+      const locale=await AsyncStorage.getItem('locale')
+      const response = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${API_KEY}&language=${locale==='ukr'?'uk':'en'}&append_to_response=credits`)
       const detailData = await response.json();
 
       return detailData;
@@ -82,8 +88,8 @@ export default class GetSerials {
   }
   static async getSimilarSerial(id){
     try {
-
-      const response = await fetch(`https://api.themoviedb.org/3/tv/${id}/similar?api_key=${API_KEY}&language=uk&sort_by=popularity.desc`)
+      const locale=await AsyncStorage.getItem('locale')
+      const response = await fetch(`https://api.themoviedb.org/3/tv/${id}/similar?api_key=${API_KEY}&language=${locale==='ukr'?'uk':'en'}&sort_by=popularity.desc`)
       const similarSerialData = await response.json();
 
       return similarSerialData;
@@ -95,7 +101,7 @@ export default class GetSerials {
   static async getReviews(id){
     try {
 
-      const response =    await fetch(`https://api.themoviedb.org/3/tv/${id}/reviews?api_key=${API_KEY}&language=uk`)
+      const response =    await fetch(`https://api.themoviedb.org/3/tv/${id}/reviews?api_key=${API_KEY}&language=${locale==='ukr'?'uk':'en'}`)
       const reviewsData = await response.json();
 
       return reviewsData;
@@ -120,7 +126,8 @@ export default class GetSerials {
   }
   static async getSerialTrailer(serial_id){
     try {
-      const response=await fetch(`https://api.themoviedb.org/3/tv/${serial_id}/videos?api_key=${API_KEY}&language=uk&language=en-US`)
+      const locale=await AsyncStorage.getItem('locale')
+      const response=await fetch(`https://api.themoviedb.org/3/tv/${serial_id}/videos?api_key=${API_KEY}&language=uk&language=${locale==='ukr'?'uk':'en'}`)
       const trailer=await response.json()
       return trailer.results
     }catch (error){

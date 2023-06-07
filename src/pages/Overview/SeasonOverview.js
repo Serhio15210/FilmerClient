@@ -17,15 +17,15 @@ import {normalize} from "../../responsive/fontSize";
 import GetSerials from "../../api/GetSerials";
 import {getReviews} from "../../api/films";
 import GetFilms from "../../api/GetFilms";
-import Loading from "../../components/Loading";
-import {styles} from "./styles";
+import Loading from "../../components/UI/Loading";
+import {styles} from "./style";
 import RateInfoModal from "../../components/filmModals/RateInfoModal";
 import TrailerModal from "../../components/Films/TrailerModal";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AnimatedHeader from "../../components/UI/AnimatedHeader";
 import {IMG_URI} from "../../api/apiKey";
 import LinearGradient from "react-native-linear-gradient";
-import {MAIN_GREY, MAIN_RED} from "../../constants";
+import {MAIN_GREY, MAIN_RED} from "../../constants/colors";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Seasons from "./Seasons";
@@ -54,7 +54,7 @@ const SeasonOverview = ({route}) => {
   const [reviews, setReviews] = useState({all: [], subs: []});
   const [trailer, setTrailer] = useState([]);
   const [chosenFilm, setChosenFilm] = useState({})
-  const {screenTheme, isDarkTheme} = useTheme();
+  const {screenTheme, isDarkTheme,i18n} = useTheme();
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const details = screenTheme;
@@ -177,14 +177,14 @@ const SeasonOverview = ({route}) => {
               <View style={{marginTop: normalize(10)}}>
                 <Text style={styles.text} numberOfLines={openReview ? 0 : 3}>{state.selected?.overview}</Text>
                 <Pressable style={{alignSelf: 'center'}} onPress={() => setOpenReview(!openReview)}>
-                  {openReview ? <Text style={{...styles.text, color: MAIN_RED}}>Hide</Text> :
+                  {openReview ? <Text style={{...styles.text, color: MAIN_RED}}>{i18n.t('hide')}</Text> :
                     <MaterialIcons name={'more-horiz'} color={MAIN_RED} size={normalize(40)}/>}
                 </Pressable>
               </View>
             </View>}
 
             <View style={{flex: 1, paddingTop: normalize(20)}}>
-              <Text style={styles.tagline}>Епізоди:</Text>
+              <Text style={styles.tagline}>{i18n.t('episodes')}:</Text>
               <Episodes data={state.selected.episodes}/>
             </View>
             <View style={{marginTop: normalize(50)}}>
@@ -192,7 +192,7 @@ const SeasonOverview = ({route}) => {
                 <TouchableOpacity
                   style={{...styles.switchButton, borderColor: MAIN_GREY, width: '100%'}}
                   onPress={() => setSwitchButton('cast')}>
-                  <Text style={styles.text}>Команда</Text>
+                  <Text style={styles.text}>{i18n.t('team')}</Text>
                 </TouchableOpacity>
               </View>
               <Crew cast={cast} crew={crew} navigation={navigation}/>

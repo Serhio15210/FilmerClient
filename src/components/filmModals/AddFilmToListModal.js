@@ -13,7 +13,7 @@ import {
 } from "react-native";
 
 import {useAuth} from "../../providers/AuthProvider";
-import ListPoster from "../ListPoster";
+import ListPoster from "../UI/ListPoster";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {useTheme} from "../../providers/ThemeProvider";
 
@@ -21,19 +21,21 @@ import {useSelector} from "react-redux";
 import ModalContainer from "../ModalContainer";
 import {AirbnbRating} from "react-native-ratings";
 import {normalize} from "../../responsive/fontSize";
-import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED, MAIN_RED_FADE, MAIN_SUCCESS} from "../../constants";
+import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED, MAIN_RED_FADE, MAIN_SUCCESS} from "../../constants/colors";
 import ListPreview from "../UserLists/ListPreview";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {FAVORITE_LIST_IMG, IMG_URI} from "../../api/apiKey";
 import unknown from "../../styles/unknown.png";
 import {addFilmsToList, addFilmToList} from "../../api/lists";
+import {themeColors} from "./themeColors";
 
 const AddFilmToListModal = ({open, setOpen, film}) => {
   const {
     user, refresh, userList
   } = useSelector((state) => state.auth);
-  const {isDarkTheme, screenTheme} = useTheme()
+  const {isDarkTheme, screenTheme,i18n,appTheme} = useTheme()
+  const styles=style(themeColors[appTheme])
   const {getUserLists} = useAuth()
   const ifFilmWasAddedToList = (listId) => {
     const id=film.id||film.imdb_id
@@ -54,9 +56,9 @@ const AddFilmToListModal = ({open, setOpen, film}) => {
 
       <View style={styles.container}>
         <View style={{...styles.block,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-          <Text style={styles.title}>Add to</Text>
+          <Text style={styles.title}>{i18n.t('addTo')}</Text>
           <Pressable onPress={()=>setOpen(false)}>
-            <MaterialIcons name="close" size={30} color={'black'}
+            <MaterialIcons name="close" size={30} color={themeColors[appTheme].titleColor}
             />
           </Pressable>
 
@@ -105,12 +107,12 @@ const AddFilmToListModal = ({open, setOpen, film}) => {
     </ModalContainer>
   );
 };
-const styles = StyleSheet.create({
+const style = (theme)=> StyleSheet.create({
   container: {
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'white',
+    backgroundColor: theme.backgroundColor,
     padding: normalize(15),
     borderRadius: 10,
 
@@ -124,10 +126,10 @@ const styles = StyleSheet.create({
     paddingBottom: normalize(20)
   },
   title: {
-    color: "black", fontWeight: '700', fontSize: 20
+    color: theme.titleColor, fontWeight: '700', fontSize: normalize(20)
   },
   input: {
-    color: 'black', minHeight: normalize(100)
+    color: theme.titleColor, minHeight: normalize(100)
   },
   button: {
     width: '100%',

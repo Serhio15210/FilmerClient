@@ -162,3 +162,140 @@ export const data = [
     "picture":politics
   }
 ];
+export const dataEng = [
+  {
+    "id": 28,
+    "name": "Action",
+    "picture":action
+  },
+  {
+    "id": 12,
+    "name": "Adventure",
+    "picture":adventure
+  },
+  {
+    "id": 16,
+    "name": "Animation",
+    "picture":animation
+  },
+  {
+    "id": 35,
+    "name": "Comedy",
+    "picture":comedy
+  },
+  {
+    "id": 80,
+    "name": "Crime",
+    "picture":crime
+  },
+  {
+    "id": 99,
+    "name": "Documentary",
+    "picture":documentary
+  },
+  {
+    "id": 18,
+    "name": "Drama",
+    "picture":drama
+  },
+  {
+    "id": 10751,
+    "name": "Family",
+    "picture":family
+  },
+  {
+    "id": 14,
+    "name": "Fantasy",
+    "picture":fantasy
+  },
+  {
+    "id": 36,
+    "name": "History",
+    "picture":history
+  },
+  {
+    "id": 27,
+    "name": "Horror",
+    "picture":horror
+  },
+  {
+    "id": 10402,
+    "name": "Music",
+    "picture":music
+  },
+  {
+    "id": 9648,
+    "name": "Detective",
+    "picture":detective
+  },
+  {
+    "id": 10749,
+    "name": "Romance",
+    "picture":romance
+  },
+  {
+    "id": 878,
+    "name": "Science fiction",
+    "picture":scienceFiction
+  },
+  {
+    "id": 10770,
+    "name": "Television film",
+    "picture":tv
+  },
+  {
+    "id": 53,
+    "name": "Thriller",
+    "picture":thriller
+  },
+  {
+    "id": 10752,
+    "name": "War",
+    "picture":war
+  },
+  {
+    "id": 37,
+    "name": "Western",
+    "picture":western
+  },
+  {
+    "id": 10759,
+    "name": "Action & adventure",
+    "picture":tvAdventure
+  },
+  {
+    "id": 10762,
+    "name": "For kids",
+    "picture":kids
+  },
+  {
+    "id": 10763,
+    "name": "News",
+    "picture":news
+  },
+  {
+    "id": 10764,
+    "name": "Reality",
+    "picture":reality
+  },
+  {
+    "id": 10765,
+    "name": "Sci-Fi",
+    "picture":scifi
+  },
+  {
+    "id": 10766,
+    "name": "Soap",
+    "picture":soap
+  },
+  {
+    "id": 10767,
+    "name": "Talk",
+    "picture":talk
+  },
+  {
+    "id": 10768,
+    "name": "Politics",
+    "picture":politics
+  }
+];

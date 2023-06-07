@@ -2,18 +2,21 @@ import {useTheme} from "../providers/ThemeProvider";
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
 import {DrawerContent} from "../components/navigation/DrawerMenu";
-import {Text, TouchableOpacity, View} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Tabs from "./Tabs";
 import {createDrawerNavigator} from "@react-navigation/drawer";
-import {MAIN_RED} from "../constants";
+import {MAIN_RED} from "../constants/colors";
 import {normalize} from "../responsive/fontSize";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import NotificationModal from "../components/wrapper/NotificationModal";
 import {Root} from "./Root";
 import TopTab from "./TopTab";
+import {themeColors} from "./themeColors";
 
 const Draw = createDrawerNavigator();
 const NotificationButton = ({openNotification, setOpenNotification}) => {
+  const {isDarkTheme,appTheme} = useTheme();
+  const style=styles(themeColors[appTheme])
   const {
     user, notifications
   } = useSelector((state) => state.auth);
@@ -22,33 +25,11 @@ const NotificationButton = ({openNotification, setOpenNotification}) => {
     setUnreadCount(notifications?.filter(item => !item?.isRead)?.length)
   },[notifications])
   return (
-    <View style={{
-      backgroundColor: 'red', position: 'absolute',
-      top: 0
-    }}>
+    <View style={style.notificationContainer}>
 
-      <TouchableOpacity style={{
-        backgroundColor: MAIN_RED,
-        borderBottomRightRadius: 30,
-        borderBottomLeftRadius: 30,
-        borderTopLeftRadius: 30,
-        padding: normalize(15),
-        alignSelf: 'flex-end',
-        position: 'absolute',
-        top: 0
-      }} onPress={() => setOpenNotification(!openNotification)}>
+      <TouchableOpacity style={style.notificationButton} onPress={() => setOpenNotification(!openNotification)}>
         {unreadCount > 0 &&
-          <View style={{
-            position: 'absolute',
-            left: 0,
-            top: normalize(5),
-            width: normalize(18),
-            height: normalize(18),
-            backgroundColor: 'black',
-            borderRadius: 50,
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}><Text
+          <View style={style.count}><Text
             style={{color: 'white', fontSize: normalize(10)}}>{unreadCount}</Text></View>}
         <Ionicons name="notifications" color="white" size={normalize(26)}/>
       </TouchableOpacity>
@@ -58,7 +39,7 @@ const NotificationButton = ({openNotification, setOpenNotification}) => {
   );
 }
 export const Drawer = (props) => {
-  const {isDarkTheme} = useTheme();
+  const {isDarkTheme,appTheme} = useTheme();
 
   const dispatch = useDispatch();
 
@@ -72,7 +53,9 @@ export const Drawer = (props) => {
                     screenOptions={({route}) => ({
 
                       useNativeDriver: true,
-                      headerStyle: {elevation: 0},
+                      headerStyle: {elevation: 0,backgroundColor:themeColors[appTheme].backgroundColor},
+                      headerTitleStyle: {color: themeColors[appTheme].titleColor},
+                      headerTintColor:themeColors[appTheme].titleColor,
                       drawerLabel: ({focused, color, size}) => {
                         return <Text>{route.name}</Text>
                       },
@@ -93,7 +76,7 @@ export const Drawer = (props) => {
                      headerShown: true,
                      useNativeDriver: true,
                      title: 'Filmer',
-                     headerTitleStyle: {color: isDarkTheme ? '#DAA520' : 'black'},
+
 
                    }}/>
       {/*<Draw.Screen name="DrawerHomeRoot" component={Root}*/}
@@ -107,3 +90,30 @@ export const Drawer = (props) => {
     </Draw.Navigator>
   );
 }
+const styles = (theme)=>StyleSheet.create({
+  notificationContainer:{
+    backgroundColor: 'red', position: 'absolute',
+    top: 0
+  },
+  notificationButton:{
+    backgroundColor: theme.notificationButtonBg,
+    borderBottomRightRadius: 30,
+    borderBottomLeftRadius: 30,
+    borderTopLeftRadius: 30,
+    padding: normalize(15),
+    alignSelf: 'flex-end',
+    position: 'absolute',
+    top: 0
+  },
+  count:{
+    position: 'absolute',
+    left: 0,
+    top: normalize(5),
+    width: normalize(18),
+    height: normalize(18),
+    backgroundColor: 'black',
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+})

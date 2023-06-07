@@ -3,7 +3,7 @@ import {Image, ImageBackground, Text, TouchableOpacity, View} from "react-native
 import {normalize} from "../../responsive/fontSize";
 import {IMG_URI} from "../../api/apiKey";
 import unknown from "../../styles/unknown.png";
-import {MAIN_RED} from "../../constants";
+import {MAIN_RED} from "../../constants/colors";
 import Entypo from "react-native-vector-icons/Entypo";
 
 const OverviewFilmItem = ({item, onPress}) => {

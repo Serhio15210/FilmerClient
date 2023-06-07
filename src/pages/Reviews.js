@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {normalize} from "../responsive/fontSize";
-import {MAIN_GREY_FADE, MAIN_RED} from "../constants";
+import {MAIN_GREY_FADE, MAIN_RED} from "../constants/colors";
 import Review from "./Overview/Review";
 
 const Reviews = ({route}) => {

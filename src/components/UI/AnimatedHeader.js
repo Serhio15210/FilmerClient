@@ -3,9 +3,11 @@ import {normalize} from "../../responsive/fontSize";
 import {Animated, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {useNavigation} from "@react-navigation/native";
+import {useTheme} from "../../providers/ThemeProvider";
 
 const AnimatedHeader = ({scrollY,title,headerBgColor,arrowColor,headerOpacity}) => {
   const navigation=useNavigation()
+  const {appTheme}=useTheme()
   // const headerBgColor = scrollY.interpolate({
   //   inputRange: [0, normalize(100), normalize(200)],
   //   outputRange: ['transparent', 'rgba(255, 255, 255, 0.4)','rgba(255, 255, 255, 1)'],
@@ -44,7 +46,7 @@ const AnimatedHeader = ({scrollY,title,headerBgColor,arrowColor,headerOpacity}) 
         paddingLeft:normalize(60),
         justifyContent:'center'
       }}>
-        <Text style={styles.headerText}>{title}</Text>
+        <Text style={{...styles.headerText,color:appTheme==='light'?'black':'white'}}>{title}</Text>
       </Animated.View>
       <TouchableOpacity style={{marginHorizontal:normalize(15),position:'absolute'}} onPress={()=>navigation.goBack()}>
         <Animated.Text style={{color:arrowColor}}><AntDesign name={'arrowleft'}   size={24}  /></Animated.Text>

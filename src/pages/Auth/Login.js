@@ -21,11 +21,12 @@ import {useTheme} from "../../providers/ThemeProvider";
 import logo from "../../assets/logo.png"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import {MAIN_RED, MAIN_YELLOW} from "../../constants";
+import {MAIN_RED, MAIN_YELLOW} from "../../constants/colors";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {signIn} from "../../api/auth";
 import {normalize} from "../../responsive/fontSize";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {themeColors} from "./themeColors";
 
 
 const Login = ({navigation}) => {
@@ -36,10 +37,10 @@ const Login = ({navigation}) => {
   const [isLoading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const {setAuthToken,setIsAuth}=useAuth()
-  const {isDarkTheme} = useTheme()
+  const {isDarkTheme,appTheme} = useTheme()
   const [translateY, setTranslateY] = useState(new Animated.Value(normalize(350)))
   const [paddingBottom, setPaddingBottom] = useState(new Animated.Value(normalize(45)))
-
+  const {i18n}=useTheme()
   const handleSubmit = async () => {
     setLoading(true)
     if (email === "" || password === "") {
@@ -105,36 +106,33 @@ const Login = ({navigation}) => {
       keyboardDidShowListener.remove();
     };
   }, []);
+  const style = form(themeColors[appTheme]);
+  const headerStyle = header(themeColors[appTheme]);
+
   return (
-    <ScrollView>
-      <Animated.View style={{...header.container, height: translateY, paddingBottom: paddingBottom}}>
-        <View style={header.inner}>
+    <ScrollView style={{backgroundColor:themeColors[appTheme].backgroundColor}}>
+      <Animated.View style={{...headerStyle.container, height: translateY, paddingBottom: paddingBottom}}>
+        <View style={headerStyle.inner}>
           <Text style={{
-            ...header.title,
-            color: !isDarkTheme ? 'white' : 'black',
-          }}>Авторизація</Text>
-          <View style={header.icon}>
+            ...headerStyle.title,
+          }}>{i18n.t('authorisation')}</Text>
+          <View style={headerStyle.icon}>
             <AntDesign name={'login'} color={'white'} size={50}/>
           </View>
-
         </View>
-        <View style={header.logo}>
+        <View style={headerStyle.logo}>
           <Image source={logo} style={{width: '100%', height: '100%'}} resizeMode={'contain'}/>
         </View>
       </Animated.View>
 
-      <View style={{...basic.container, backgroundColor: isDarkTheme ? '#333333' : 'white'}}>
-
-
-        <View style={form.field}>
-          <Text style={{...form.label, color: isDarkTheme ? 'white' : 'black'}}>Пошта</Text>
+      <View style={style.container}>
+        <View style={style.field}>
+          <Text style={{...style.label}}>{i18n.t('email')}</Text>
           <TextInput
             onChangeText={value => setEmail(value)}
             name="email"
             style={{
-              ...form.input,
-              color: isDarkTheme ? 'white' : 'black',
-              borderBottomColor: isDarkTheme ? 'white' : 'black'
+              ...style.input
             }}
             value={email}
             autoCapitalize="none"
@@ -143,15 +141,14 @@ const Login = ({navigation}) => {
 
         </View>
 
-        <View style={form.field}>
-          <Text style={{...form.label, color: isDarkTheme ? 'white' : 'black'}}>Пароль</Text>
-          <View style={form.passwordBlock}>
+        <View style={style.field}>
+          <Text style={{...style.label}}>{i18n.t('password')}</Text>
+          <View style={style.passwordBlock}>
             <TextInput
               onChangeText={value => setPassword(value)}
               name="password"
               style={{
-                ...form.input,
-                color: isDarkTheme ? 'white' : 'black',
+                ...style.input,
                 borderBottomColor: 'transparent',
                 width: '90%',
               }}
@@ -159,21 +156,20 @@ const Login = ({navigation}) => {
               value={password}
               autoCapitalize="none"
             />
-            <FontAwesome5 name={!showPassword ? 'eye-slash' : 'eye'} color={'black'} style={form.eye} onPress={() => {
+            <FontAwesome5 name={!showPassword ? 'eye-slash' : 'eye'} color={'black'} style={style.eye} onPress={() => {
               setShowPassword(!showPassword)
             }}/>
 
           </View>
 
-
         </View>
 
-        {message && <Text style={form.message}>{message}</Text>}
-        <View style={form.field}>
+        {message && <Text style={style.message}>{message}</Text>}
+        <View style={style.field}>
 
           <TouchableOpacity onPress={handleSubmit} disabled={!email || !password} style={{
-            ...form.button,
-            backgroundColor: !email || !password ? "black" : isDarkTheme ? MAIN_YELLOW : MAIN_RED
+            ...style.button,
+            backgroundColor: !email || !password ? "black" : themeColors[appTheme].buttonBackgroundColor
           }}>
             {isLoading ?
               <View style={{
@@ -181,19 +177,19 @@ const Login = ({navigation}) => {
                 justifyContent: "center",
               }}>
                 <ActivityIndicator size="large"
-                                   color={isDarkTheme ? "#DAA520" : "white"}/></View> :
-              <Text style={form.buttonText}>Увійти</Text>}
+                                   color={"white"}/></View> :
+              <Text style={style.buttonText}>{i18n.t('enter')}</Text>}
           </TouchableOpacity>
 
         </View>
 
-        <View style={[form.field, form.field1]}>
-          <Text style={{...form.text, color: isDarkTheme ? 'white' : 'black'}}>Не маєте акаунту?</Text>
+        <View style={[style.field, style.field1]}>
+          <Text style={{...style.text}}>{i18n.t('dontHaveAccount')}</Text>
           <TouchableOpacity
             onPress={() => navigation.navigate("Signup")}
-            style={{...form.button1}}
+            style={{...style.button1}}
           >
-            <Text style={{...form.buttonText1, color: isDarkTheme ? '#DAA520' : '#DC143C'}}>Зареєструватись</Text>
+            <Text style={{...style.signUp}}>{i18n.t('signUp')}</Text>
           </TouchableOpacity>
         </View>
 
@@ -202,12 +198,12 @@ const Login = ({navigation}) => {
   );
 };
 
-export const header = StyleSheet.create({
+export const header =(theme)=> StyleSheet.create({
   container: {
     paddingBottom: 45, height: 350
   },
   inner: {
-    backgroundColor: 'black',
+    backgroundColor: theme.backgroundTitle,
     height: '100%',
     width: '100%',
     borderBottomRightRadius: 50,
@@ -218,10 +214,11 @@ export const header = StyleSheet.create({
     fontSize: normalize(32),
     marginTop: normalize(30),
     fontWeight: "bold",
-    paddingLeft: 15
+    paddingLeft: 15,
+    color:theme.titleColor
   },
   icon: {
-    backgroundColor: MAIN_RED,
+    backgroundColor: theme.titleIconBackground,
     width: normalize(150),
     height: normalize(150),
     position: 'absolute',
@@ -247,21 +244,20 @@ export const header = StyleSheet.create({
     justifyContent: 'center',
   }
 })
-export const basic = StyleSheet.create({
+
+
+export const form = (theme) => StyleSheet.create({
   container: {
     flex: 1,
     padding: normalize(15),
     paddingTop: 0,
-
+    backgroundColor:theme.backgroundColor
   },
   image: {
     width: "100%",
     height: "60%",
     resizeMode: "cover"
-  }
-});
-
-export const form = StyleSheet.create({
+  },
   field: {
     padding: normalize(15),
     paddingVertical: normalize(15),
@@ -274,21 +270,21 @@ export const form = StyleSheet.create({
 
   },
   label: {
-    color: "black"
+    color: theme?.borderColor
   },
   input: {
     borderBottomWidth: 2,
-    borderBottomColor: "black",
+    borderBottomColor: theme?.borderColor,
     paddingVertical: 10,
     fontWeight: "bold",
     letterSpacing: 1,
     fontSize: 15,
-
+    color:theme?.textColor,
     zIndex: 1
   },
   eye: {
     fontSize: normalize(18),
-    color: 'black',
+    color: theme.textColor,
     zIndex: 2
 
   },
@@ -317,12 +313,12 @@ export const form = StyleSheet.create({
     alignItems: "center"
   },
   text: {
-    color: "black",
+    color: theme.textColor,
     fontSize: 15
   },
-  buttonText1: {
+  signUp: {
     fontWeight: "bold",
-    color: 'white',
+    color: theme.signUpTextColor,
     fontSize: 15
   },
 
@@ -339,7 +335,7 @@ export const form = StyleSheet.create({
     color: "tomato"
   },
   passwordBlock: {
-    borderBottomWidth: 2, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'
+    borderBottomWidth: 2,borderColor:theme.borderColor, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'
   }
 });
 export default Login;
