@@ -1,6 +1,7 @@
 import {StyleSheet} from "react-native";
 import {normalize} from "../../../responsive/fontSize";
 import {MAIN_GREY, MAIN_GREY_FADE, MAIN_RED} from "../../../constants/colors";
+import {generateRandomColor} from "../../../styles/randomColors";
 
 export const styles = StyleSheet.create({
   scroll: {
@@ -24,6 +25,14 @@ export const styles = StyleSheet.create({
     color: 'black',
     fontSize: normalize(18),
     textTransform: 'capitalize'
+  },
+  avatar: {
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: generateRandomColor(),
+    width: normalize(100),
+    height: normalize(100),
   },
   profileHeader: {
     width: '100%',

@@ -11,16 +11,18 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import {IMG_URI, UNKNOWN_IMG} from "../../api/apiKey";
 import {AirbnbRating} from "react-native-ratings";
 import UserFilm from "../Profile/UserFilm";
+import {useTheme} from "../../providers/ThemeProvider";
 
 const UserFilmsScreen = ({route,navigation}) => {
   const [films, setFilms] = useState([])
   let scrollRef = useRef(null);
+  const {i18n} = useTheme()
   const [scrollPosition, setScrollPosition] = useState(0)
   const [scrollY] = useState(new Animated.Value(0));
-  const filters = [{label: 'ASC', value: 'asc'}, {label: 'DESC', value: 'desc'}, {
-    label: 'Rating Highest',
+  const filters = [{label: i18n.t('asc'), value: 'asc'}, {label: i18n.t('desc'), value: 'desc'}, {
+    label: i18n.t('ratingHighest'),
     value: 'rateHigh'
-  }, {label: 'Rating Lowest', value: 'rateLow'}]
+  }, {label: i18n.t('ratingLowest'), value: 'rateLow'}]
   const rates = [{label: '0', value: 0}, {label: '1', value: 1}, {label: '2', value: 2}, {
     label: '3',
     value: 3

@@ -32,10 +32,11 @@ import Details from "./Details";
 import Genres from "./Genres";
 import Review from "./Review";
 import SimilarFilms from "./SimilarFilms";
-import {styles} from "./style";
+import {style, styles} from "./style";
 import GetSerials from "../../api/GetSerials";
 import {data} from "../../constants/genres";
 import Seasons from "./Seasons";
+import {themeColors} from "./themeColors";
 
 const SerialOverview = ({route}) => {
   const [isLoading, setLoading] = useState(true);
@@ -54,10 +55,11 @@ const SerialOverview = ({route}) => {
   const [reviews, setReviews] = useState({all: [], subs: []});
   const [trailer, setTrailer] = useState([]);
   const [chosenFilm, setChosenFilm] = useState({})
-  const {screenTheme, isDarkTheme,i18n} = useTheme();
+  const {screenTheme, isDarkTheme,i18n,appTheme} = useTheme();
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const details = screenTheme;
+  const styles = style(themeColors[appTheme])
   const [refreshing, setRefreshing] = React.useState(false);
   const [addFilm, setAddFilm] = useState(false);
   const [openTrailer, setOpenTrailer] = useState(false);

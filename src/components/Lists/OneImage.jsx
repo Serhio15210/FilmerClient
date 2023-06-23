@@ -17,8 +17,8 @@ const OneImage = ({listData, name}) => {
               adjustsFontSizeToFit>{name}</Text>}
       <View style={styles.imgTitleRow}>
         <Text style={styles.imgTitle} numberOfLines={2} adjustsFontSizeToFit>{listData?.name}</Text>
-        <Text style={styles.white16} numberOfLines={1}
-              adjustsFontSizeToFit>Subscribers: {listData?.subscribers?.length}</Text>
+        {/*<Text style={styles.white16} numberOfLines={1}*/}
+        {/*      adjustsFontSizeToFit>Subscribers: {listData?.subscribers?.length}</Text>*/}
       </View>
 
     </ImageBackground>

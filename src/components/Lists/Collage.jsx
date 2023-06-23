@@ -23,8 +23,8 @@ const Collage = ({listData, name}) => {
       })}
       <View style={styles.imgTitleRow}>
         <Text style={styles.imgTitle} numberOfLines={2} adjustsFontSizeToFit>{name}</Text>
-        <Text style={styles.white16} numberOfLines={1}
-              adjustsFontSizeToFit>Subscribers: {listData?.subscribers?.length}</Text>
+        {/*<Text style={styles.white16} numberOfLines={1}*/}
+        {/*      adjustsFontSizeToFit>Subscribers: {listData?.subscribers?.length}</Text>*/}
       </View>
     </View>
   );

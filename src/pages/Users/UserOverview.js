@@ -81,8 +81,11 @@ const UserOverview = ({route}) => {
       <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={styles.profileHeader}>
-            <Image source={{uri: NONAME_IMG}}
-                   style={{width: normalize(100), height: normalize(100), borderRadius: 100}}/>
+            {/*<Image source={{uri: NONAME_IMG}}*/}
+            {/*       style={{width: normalize(100), height: normalize(100), borderRadius: 100}}/>*/}
+            <View style={styles.avatar}>
+              <Text style={{fontSize: normalize(24), color: 'white'}}>{userInfo?.userName[0]?.toUpperCase()}</Text>
+            </View>
             <Text style={styles.userName}>{userInfo?.userName}</Text>
             <TouchableOpacity style={{
               backgroundColor: 'white',
@@ -97,7 +100,7 @@ const UserOverview = ({route}) => {
             }} onPress={()=>{
               isSubscribe()?unsubscribe():subscribe()
             }}>
-              <Text style={{...styles.text,color:isSubscribe()?MAIN_SUCCESS:'black'}} numberOfLines={1} adjustsFontSizeToFit>{isSubscribe()?'Підписка':'Підписатись'}</Text>
+              <Text style={{...styles.text,color:isSubscribe()?MAIN_SUCCESS:'black'}} numberOfLines={1} adjustsFontSizeToFit>{isSubscribe()?i18n.t('subscriber'):i18n.t('subscribe')}</Text>
             </TouchableOpacity>
           </View>
 
@@ -125,7 +128,7 @@ const UserOverview = ({route}) => {
             <RatingStats data={rateStats}/>
           </View>
           <View style={styles.block}>
-            <Text style={styles.title}>Details</Text>
+            <Text style={styles.title}>{i18n.t('details')}</Text>
             <TouchableOpacity style={styles.detailRow} onPress={() => navigation.navigate('UserFilmsScreen',{id:route.params.id,title:userInfo?.userName})}>
               <Text style={styles.text}>{i18n.t('films')}</Text>
               <Text style={styles.text}>{rateStats?.all}</Text>

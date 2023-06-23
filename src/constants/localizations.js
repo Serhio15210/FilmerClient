@@ -92,7 +92,10 @@ export const eng = {
   ratingHighest:'Rating Highest',
   ratingLowest:'Rating Lowest',
   all:'All',
-  successReg:'Success registration'
+  successReg:'Success registration',
+  successAddList:'List created!',
+  subscriber:'Subscribed',
+  subscribe:'Subscribed'
 }
 export const ukr = {
   authorisation:'Авторизація',
@@ -188,5 +191,8 @@ export const ukr = {
   ratingHighest:'Рейтинг Найвищий',
   ratingLowest:'Рейтинг Найнищий',
   all:'Усі',
-  successReg:'Реєстрація успішна'
+  successReg:'Реєстрація успішна',
+  successAddList:'Список створено?',
+  subscriber:'Підписка',
+  subscribe:'Підписатись'
 }

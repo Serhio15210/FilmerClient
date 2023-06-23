@@ -63,7 +63,10 @@ const ProfileScreen = () => {
           <TouchableOpacity style={{position: 'absolute', top: normalize(20), right: normalize(15)}}>
             <Feather name={'edit'} color={'white'} size={18}/>
           </TouchableOpacity>
-          <Image source={{uri: NONAME_IMG}} style={{width: normalize(100), height: normalize(100), borderRadius: 100}}/>
+          {/*<Image source={{uri: NONAME_IMG}} style={{width: normalize(100), height: normalize(100), borderRadius: 100}}/>*/}
+          <View style={styles.avatar}>
+            <Text style={{fontSize: normalize(24), color: 'white'}}>{user?.userName[0]?.toUpperCase()}</Text>
+          </View>
           <Text style={styles.userName}>{user?.userName}</Text>
 
         </View>

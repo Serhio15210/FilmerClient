@@ -47,8 +47,8 @@ const AuthProvider = ({children}) => {
 
   const getUserNotifications = () => {
     getNotifications().then(res => {
-      // console.log(notifications.concat(res?.notifications))
-      dispatch(setNotifications(res?.notifications))
+
+      dispatch(setNotifications(res?.notifications||[]))
     })
   }
 

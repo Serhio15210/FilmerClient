@@ -34,6 +34,7 @@ import {createNewList} from "../../api/lists";
 import NewListFilmItem from "../../components/Films/NewListFilmItem";
 import {setUserList} from "../../redux/authReducer";
 import {useDispatch, useSelector} from "react-redux";
+import Toast from "react-native-toast-message";
 
 const AddList = (props) => {
 
@@ -198,6 +199,11 @@ const AddList = (props) => {
           if (nameQuery?.length >= 5) {
             const load = await saveList()
             if (load) {
+              Toast.show({
+                type: 'success',
+                // And I can pass any custom props I want
+                text1: i18n.t('successAddList'),
+              });
               // getUserLists()
               // dispatch(setUserList((prev)=>{
               //   return prev.filter(item=>item?._id!==id)
